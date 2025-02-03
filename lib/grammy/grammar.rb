@@ -1,9 +1,12 @@
 require "grammy"
+require "grammy/combinators"
 require "grammy/scanner"
 
 module Grammy
 
   class Grammar
+    include Grammy::Combinators
+
     attr_reader :scanner
 
     def self.start(name = nil)
@@ -32,28 +35,6 @@ module Grammy
 
     def rules
       self.class.rules
-    end
-
-    protected def match(pattern)
-      scanner.match(pattern)
-    end
-
-    protected def sequence(*children)
-      start_pos = scanner.pos
-      results = []
-      children.each do |child|
-        return scanner.backtrack(start_pos) unless child
-        results << child
-      end
-    end
-
-    protected def choice(*children)
-      start_pos = scanner.pos
-      children.each do |child|
-        return child if child
-        scanner.backtrack(start_pos)
-      end
-      nil
     end
   end
 end
