@@ -1,0 +1,57 @@
+---
+
+require:
+  - rubocop-rspec
+  - rubocop-performance
+
+inherit_from:
+  - https://raw.githubusercontent.com/booch/config_files/master/ruby/rubocop.yml
+
+# Ignore some files. NOTE: Exclude does not add to any existing Exclude directives.
+AllCops:
+  TargetRubyVersion: 3.4
+  NewCops: enable
+  Exclude:
+    - 'church*.rb'
+    - 'vendor/**/*'
+
+# Allow longer lines.
+Layout/LineLength:
+  Max: 160
+
+# Use `{}` for blocks that return a value; otherwise use `do` and `end`.
+# We make a few exceptions, mostly for RSpec. And for grammar and transform rules.
+Style/BlockDelimiters:
+  EnforcedStyle: semantic
+  FunctionalMethods:
+    - expect
+  AllowedMethods:
+    - rule
+    - rule!
+    - let
+    - let!
+    - subject
+
+Layout/EmptyLinesAroundClassBody:
+  Enabled: false
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: false
+Layout/EmptyLineBetweenDefs:
+  Enabled: false
+Layout/EmptyLinesAroundBlockBody:
+  Enabled: false
+
+# Be a bit more lenient with RSpec: don't require filename to match class; allow more than 1 expectation per example.
+RSpec/SpecFilePathFormat:
+  Enabled: False
+RSpec/MultipleExpectations:
+  Max: 10
+RSpec/ExampleLength:
+  Max: 10
+
+RSpec/EmptyLineAfterSubject:
+  Enabled: false
+
+Naming/MethodName:
+  AllowedPatterns:
+    - '\AParser\z'
