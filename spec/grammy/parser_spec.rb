@@ -13,6 +13,11 @@ class RegexGrammar < Grammy::Grammar
   rule(:number) { match(/\d+/) }
 end
 
+class SequenceGrammar < Grammy::Grammar
+  start :seq
+  rule(:seq) { sequence(match("x = "), match(/\d+/)) }
+end
+
 RSpec.describe Grammy::Parser, :integration do
   subject(:parse_tree) { parser.parse(input) }
   let(:parser) { Grammy::Parser(grammar) }
@@ -50,6 +55,27 @@ RSpec.describe Grammy::Parser, :integration do
 
     context "with an invalid number" do
       let(:input) { "-" }
+
+      it "raises an error" do
+        expect { parse_tree }.to raise_error(Grammy::ParseError)
+      end
+    end
+  end
+
+  context "with a grammar with a sequence" do
+    let(:grammar) { SequenceGrammar }
+
+    context "with a valid input" do
+      let(:input) { "x = 1234" }
+      let(:expected_parse_tree) { ["x = ", "1234"] }
+
+      it "parses and returns the parse tree" do
+        expect(parse_tree).to eq(expected_parse_tree)
+      end
+    end
+
+    context "with an invalid input" do
+      let(:input) { "x=1234" }
 
       it "raises an error" do
         expect { parse_tree }.to raise_error(Grammy::ParseError)

@@ -34,8 +34,19 @@ module Grammy
       self.class.rules
     end
 
-    def match(pattern)
+    protected def match(pattern)
       scanner.match(pattern)
     end
+
+    protected def sequence(*children)
+      start_pos = scanner.pos
+      results = []
+      children.each do |child|
+        result = child
+        return scanner.backtrack(start_pos) unless result
+        results << result
+      end
+    end
+
   end
 end
