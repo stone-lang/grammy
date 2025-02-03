@@ -27,11 +27,20 @@ module Grammy
 
     def match(pattern)
       case pattern
+      when Regexp
+        match_regexp(pattern)
       when String
         match_string(pattern)
       else
         fail ArgumentError, "Invalid pattern: #{pattern} of class #{pattern.class}"
       end
+    end
+
+    private def match_regexp(pattern)
+      match = @input[@pos..].match(/\A#{pattern}/)
+      return nil unless match
+      advance(match[0].size)
+      match[0]
     end
 
     private def match_string(pattern)

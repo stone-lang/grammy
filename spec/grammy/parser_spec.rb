@@ -5,9 +5,12 @@ require "grammy/parser"
 
 class LiteralGrammar < Grammy::Grammar
   start(:plus)
-  rule(:plus) {
-    match("+")
-  }
+  rule(:plus) { match("+") }
+end
+
+class RegexGrammar < Grammy::Grammar
+  start(:number)
+  rule(:number) { match(/\d+/) }
 end
 
 RSpec.describe Grammy::Parser, :integration do
@@ -26,6 +29,26 @@ RSpec.describe Grammy::Parser, :integration do
     end
 
     context "with anything other than a literal `+`" do
+      let(:input) { "-" }
+
+      it "raises an error" do
+        expect { parse_tree }.to raise_error(Grammy::ParseError)
+      end
+    end
+  end
+
+  context "with a regex grammar for a number" do
+    let(:grammar) { RegexGrammar }
+
+    context "with a valid number" do
+      let(:input) { "123" }
+
+      it "parses a number" do
+        expect(parse_tree).to eq("123")
+      end
+    end
+
+    context "with an invalid number" do
       let(:input) { "-" }
 
       it "raises an error" do
