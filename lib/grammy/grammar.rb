@@ -42,11 +42,18 @@ module Grammy
       start_pos = scanner.pos
       results = []
       children.each do |child|
-        result = child
-        return scanner.backtrack(start_pos) unless result
-        results << result
+        return scanner.backtrack(start_pos) unless child
+        results << child
       end
     end
 
+    protected def choice(*children)
+      start_pos = scanner.pos
+      children.each do |child|
+        return child if child
+        scanner.backtrack(start_pos)
+      end
+      nil
+    end
   end
 end
