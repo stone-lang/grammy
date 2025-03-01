@@ -19,8 +19,20 @@ class SequenceGrammar < Grammy::Grammar
 end
 
 class ChoiceGrammar < Grammy::Grammar
-  start :choice
-  rule(:choice) { choice(match("x"), match("y")) }
+  start :cho
+  rule(:cho) { choice(match("x"), match("y")) }
+end
+
+class RefinedSequenceGrammar < Grammy::Grammar
+  using Grammy::Refinements
+  start :seq
+  rule(:seq) { "x = " + /\d+/ }
+end
+
+class RefinedChoiceGrammar < Grammy::Grammar
+  using Grammy::Refinements
+  start :cho
+  rule(:cho) { "x" | "y" }
 end
 
 RSpec.describe Grammy::Parser, :integration do
@@ -88,8 +100,50 @@ RSpec.describe Grammy::Parser, :integration do
     end
   end
 
+  context "with a grammar with a sequence using `+`" do
+    let(:grammar) { RefinedSequenceGrammar }
+
+    context "with a valid input" do
+      let(:input) { "x = 1234" }
+      let(:expected_parse_tree) { ["x = ", "1234"] }
+
+      it "parses and returns the parse tree" do
+        expect(parse_tree).to eq(expected_parse_tree)
+      end
+    end
+
+    context "with an invalid input" do
+      let(:input) { "x=1234" }
+
+      it "raises an error" do
+        expect { parse_tree }.to raise_error(Grammy::ParseError)
+      end
+    end
+  end
+
   context "with a grammar with a choice" do
     let(:grammar) { ChoiceGrammar }
+
+    context "with a valid input" do
+      let(:input) { "x" }
+      let(:expected_parse_tree) { "x" }
+
+      it "parses and returns the parse tree" do
+        expect(parse_tree).to eq(expected_parse_tree)
+      end
+    end
+
+    context "with an invalid input" do
+      let(:input) { "z" }
+
+      it "raises an error" do
+        expect { parse_tree }.to raise_error(Grammy::ParseError)
+      end
+    end
+  end
+
+  context "with a grammar with a choice using `|`" do
+    let(:grammar) { RefinedChoiceGrammar }
 
     context "with a valid input" do
       let(:input) { "x" }

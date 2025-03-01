@@ -1,6 +1,7 @@
 require "grammy"
 require "grammy/combinators"
 require "grammy/scanner"
+require "grammy/refinements"
 
 module Grammy
 
@@ -10,11 +11,8 @@ module Grammy
     attr_reader :scanner
 
     def self.start(name = nil)
-      if name
-        @start = name
-      else
-        @start
-      end
+      @start = name if name
+      @start
     end
 
     def self.rule(name, &block)
@@ -30,7 +28,11 @@ module Grammy
     end
 
     def start
-      self.class.start || fail(NotImplementedError, "No start rule defined")
+      self.class.start || fail(Grammy::ParseError, "Start rule not defined for #{self.class}")
+    end
+
+    def start_rule
+      self.class.rules[start]
     end
 
     def rules

@@ -2,36 +2,71 @@ require "grammy"
 
 module Grammy
   module Combinators
+    class Matcher
+      attr_reader :pattern
+
+      def initialize(pattern)
+        @pattern = pattern
+      end
+
+      def match(scanner)
+        scanner.match(@pattern)
+      end
+
+      def +(other)
+        SequenceMatcher.new(self, other)
+      end
+
+      def |(other)
+        ChoiceMatcher.new(self, other)
+      end
+
+    end
+
+    class SequenceMatcher < Matcher
+      def initialize(*matchers)
+        @matchers = matchers
+      end
+
+      def match(scanner)
+        start_pos = scanner.pos
+        results = []
+        @matchers.each do |matcher|
+          result = matcher.match(scanner)
+          return scanner.backtrack(start_pos) unless result
+          results << result
+        end
+        results
+      end
+    end
+
+    class ChoiceMatcher < Matcher
+      def initialize(*matchers)
+        @matchers = matchers
+      end
+
+      def match(scanner)
+        start_pos = scanner.pos
+        @matchers.each do |matcher|
+          result = matcher.match(scanner)
+          return result if result
+          scanner.backtrack(start_pos)
+        end
+        nil
+      end
+    end
+
     protected def match(pattern)
-      scanner.match(pattern)
+      Matcher.new(pattern)
     end
 
-    protected def sequence(*children)
-      start_pos = scanner.pos
-      results = []
-      children.each do |child|
-        return scanner.backtrack(start_pos) unless child
-        results << child
-      end
+    protected def sequence(*matchers)
+      SequenceMatcher.new(*matchers)
     end
 
-    protected def choice(*children)
-      start_pos = scanner.pos
-      children.each do |child|
-        return child if child
-        scanner.backtrack(start_pos)
-      end
-      nil
+    protected def choice(*matchers)
+      ChoiceMatcher.new(*matchers)
     end
 
-    # def repeat(child, range)
-    #   results = []
-    #   while child
-    #     results << child
-    #     break if range.end && results.size >= range.end
-    #   end
-    #   return nil if results.size < range.begin
-    #   results
-    # end
   end
 end
