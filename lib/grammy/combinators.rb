@@ -25,7 +25,7 @@ module Grammy
 
     class SequenceMatcher < Matcher
       def initialize(*matchers)
-        @matchers = matchers
+        @matchers = matchers.map { |matcher| matcher.is_a?(Matcher) ? matcher : Matcher.new(matcher) }
       end
 
       def match(scanner)
@@ -42,7 +42,7 @@ module Grammy
 
     class ChoiceMatcher < Matcher
       def initialize(*matchers)
-        @matchers = matchers
+        @matchers = matchers.map { |matcher| matcher.is_a?(Matcher) ? matcher : Matcher.new(matcher) }
       end
 
       def match(scanner)
