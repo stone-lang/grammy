@@ -41,6 +41,12 @@ class SequenceAndChoiceGrammar < Grammy::Grammar
   rule(:sc) { "x = " + /\d+/ | "y" }
 end
 
+class ChoiceAndSequenceGrammar < Grammy::Grammar
+  using Grammy::Refinements
+  start :cs
+  rule(:cs) { "x" + ("y" | "z") }
+end
+
 RSpec.describe Grammy::Parser, :integration do
   subject(:parse_tree) { parser.parse(input) }
   let(:parser) { Grammy::Parser(grammar) }
@@ -184,6 +190,28 @@ RSpec.describe Grammy::Parser, :integration do
     context "when the input matches the second choice" do
       let(:input) { "y" }
       let(:expected_parse_tree) { "y" }
+
+      it "parses and returns the parse tree" do
+        expect(parse_tree).to eq(expected_parse_tree)
+      end
+    end
+  end
+
+  context "with a grammar with a choice and a sequence with parentheses" do
+    let(:grammar) { ChoiceAndSequenceGrammar }
+
+    context "when the input matches the first choice" do
+      let(:input) { "xy" }
+      let(:expected_parse_tree) { ["x", "y"] }
+
+      it "parses and returns the parse tree" do
+        expect(parse_tree).to eq(expected_parse_tree)
+      end
+    end
+
+    context "when the input matches the second choice" do
+      let(:input) { "xz" }
+      let(:expected_parse_tree) { ["x", "z"] }
 
       it "parses and returns the parse tree" do
         expect(parse_tree).to eq(expected_parse_tree)
