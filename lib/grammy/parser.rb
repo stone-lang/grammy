@@ -23,7 +23,7 @@ module Grammy
 
     def initialize(grammar_class, input)
       @scanner = Grammy::Scanner.new(input)
-      @grammar = grammar_class.new(@scanner)
+      @grammar = grammar_class.new
     end
 
     def parse

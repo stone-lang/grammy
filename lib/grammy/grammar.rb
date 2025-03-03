@@ -1,14 +1,11 @@
 require "grammy"
 require "grammy/combinators"
-require "grammy/scanner"
 require "grammy/refinements"
 
 module Grammy
 
   class Grammar
     include Grammy::Combinators
-
-    attr_reader :scanner
 
     def self.start(name = nil)
       @start = name if name
@@ -21,10 +18,6 @@ module Grammy
 
     def self.rules
       @rules ||= {}
-    end
-
-    def initialize(scanner)
-      @scanner = scanner
     end
 
     def start
