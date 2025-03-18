@@ -12,7 +12,6 @@ AllCops:
   TargetRubyVersion: 3.4
   NewCops: enable
   Exclude:
-    - 'church*.rb'
     - 'vendor/**/*'
 
 # Allow longer lines.
@@ -55,3 +54,14 @@ RSpec/EmptyLineAfterSubject:
 Naming/MethodName:
   AllowedPatterns:
     - '\AParser\z'
+
+# Allow rules to use `+` without suggesting string interpolation.
+Style/StringConcatenation:
+  Enabled: false
+
+Lint/AmbiguousOperatorPrecedence:
+  Enabled: false
+
+# Crashes, as of RuboCop 1.74.0.
+Style/WordArray:
+  Enabled: false
