@@ -12,7 +12,6 @@ AllCops:
   TargetRubyVersion: 3.4
   NewCops: enable
   Exclude:
-    - 'church*.rb'
     - 'vendor/**/*'
 
 # Allow longer lines.
@@ -61,4 +60,8 @@ Style/StringConcatenation:
   Enabled: false
 
 Lint/AmbiguousOperatorPrecedence:
+  Enabled: false
+
+# Crashes, as of RuboCop 1.74.0.
+Style/WordArray:
   Enabled: false
