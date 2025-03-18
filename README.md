@@ -44,7 +44,7 @@ class Arithmetic < Grammy::Grammar
   rule(:number) { match(/\d+/) }
 
   # Define any custom combinators.
-  def parens(exp) = match("(") + expression + match(")")
+  def parens(exp) = match("(") + exp + match(")")
 end
 
 parser = Grammy::Parser(Arithmetic)

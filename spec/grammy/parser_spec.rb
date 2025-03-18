@@ -47,6 +47,13 @@ class ChoiceAndSequenceGrammar < Grammy::Grammar
   rule(:cs) { "x" + ("y" | "z") }
 end
 
+class UserDefinedGrammar < Grammy::Grammar
+  start :us
+  rule(:us) { parens(match("123")) }
+  rule(:number) { match(/\d+/) }
+  def parens(exp) = match("(") + exp + match(")")
+end
+
 RSpec.describe Grammy::Parser, :integration do
   subject(:parse_tree) { parser.parse(input) }
   let(:parser) { Grammy::Parser(grammar) }
@@ -214,6 +221,20 @@ RSpec.describe Grammy::Parser, :integration do
       let(:expected_parse_tree) { ["x", "z"] }
 
       it "parses and returns the parse tree" do
+        expect(parse_tree).to eq(expected_parse_tree)
+      end
+    end
+  end
+
+  context "with a user-defined combinator" do
+    let(:grammar) { UserDefinedGrammar }
+
+    context "with a valid input" do
+      let(:input) { "(123)" }
+      let(:expected_parse_tree) { ["(", "123", ")"] }
+
+      it "parses and returns the parse tree" do
+        parse_tree = parser.parse(input)
         expect(parse_tree).to eq(expected_parse_tree)
       end
     end
