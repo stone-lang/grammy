@@ -14,7 +14,11 @@ module Grammy
       end
 
       def +(other)
-        SequenceMatcher.new(self, other)
+        if self.is_a?(SequenceMatcher)
+          self.add_matcher(other)
+        else
+          SequenceMatcher.new(self, other)
+        end
       end
 
       def |(other)
@@ -26,6 +30,11 @@ module Grammy
     class SequenceMatcher < Matcher
       def initialize(*matchers)
         @matchers = matchers.map { |matcher| matcher.is_a?(Matcher) ? matcher : Matcher.new(matcher) }
+      end
+
+      def add_matcher(matcher)
+        @matchers << matcher
+        self
       end
 
       def match(scanner)
