@@ -1,6 +1,4 @@
-# Determine Ruby version dynamically, by parsing `.tool-versions` file.
-TOOL_VERSIONS_RUBY = File.readlines(File.join(__dir__, ".tool-versions")).grep(/\Aruby\s+/)[0].split[1]
-ruby TOOL_VERSIONS_RUBY
+ruby file: ".tool-versions"
 
 source "https://rubygems.org"
 
