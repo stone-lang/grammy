@@ -27,10 +27,17 @@ module Grammy
     end
 
     def parse
-      result = grammar.instance_exec(&grammar.start_rule)
-      result = result.match(scanner) if result.is_a?(Grammy::Combinators::Matcher)
-      fail(Grammy::ParseError, "Parsing failed at position #{scanner.pos}") unless result && scanner.pos == scanner.input.size
+      unless result && scanner.pos == scanner.input.size
+        debugger if ENV["DEBUG"]&.to_i == 1 # rubocop:disable Lint/Debugger
+        fail(Grammy::ParseError, "Parsing failed at position #{scanner.pos}")
+      end
       result
+    end
+
+    private def result
+      @result ||= grammar.instance_exec(&grammar.start_rule)
+      @result = @result.match(scanner) if @result.is_a?(Grammy::Combinators::Matcher)
+      @result
     end
   end
 
