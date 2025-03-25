@@ -16,6 +16,7 @@ module Grammy
       @pos = 0
     end
 
+    # TODO: Rename as `consume` to match common PEG terminology.
     def advance(offset)
       @pos += offset
     end

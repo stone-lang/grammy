@@ -1,7 +1,10 @@
 require "grammy"
+require "grammy/refinements"
 
 module Grammy
   module Combinators
+    using Grammy::Refinements
+
     class Matcher
       attr_reader :pattern
 
@@ -14,27 +17,13 @@ module Grammy
       end
 
       def +(other)
-        if self.is_a?(SequenceMatcher)
-          self.add_matcher(other)
-        else
-          SequenceMatcher.new(self, other)
-        end
+        SequenceMatcher.new(self, other)
       end
-
-      def |(other)
-        ChoiceMatcher.new(self, other)
-      end
-
     end
 
     class SequenceMatcher < Matcher
       def initialize(*matchers)
-        @matchers = matchers.map { |matcher| matcher.is_a?(Matcher) ? matcher : Matcher.new(matcher) }
-      end
-
-      def add_matcher(matcher)
-        @matchers << matcher
-        self
+        @matchers = matchers
       end
 
       def match(scanner)
@@ -51,7 +40,7 @@ module Grammy
 
     class ChoiceMatcher < Matcher
       def initialize(*matchers)
-        @matchers = matchers.map { |matcher| matcher.is_a?(Matcher) ? matcher : Matcher.new(matcher) }
+        @matchers = matchers
       end
 
       def match(scanner)

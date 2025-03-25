@@ -55,7 +55,7 @@ class UserDefinedGrammar < Grammy::Grammar
 end
 
 RSpec.describe Grammy::Parser, :integration do
-  subject(:parse_tree) { parser.parse(input) }
+  subject(:tokens) { parser.parse(input).tokens }
   let(:parser) { Grammy::Parser(grammar) }
 
   context "with a grammar looking for a literal plus sign (+)" do
@@ -65,7 +65,7 @@ RSpec.describe Grammy::Parser, :integration do
       let(:input) { "+" }
 
       it "parses" do
-        expect(parse_tree).to eq("+")
+        expect(tokens).to eq("+")
       end
     end
 
@@ -73,7 +73,7 @@ RSpec.describe Grammy::Parser, :integration do
       let(:input) { "-" }
 
       it "raises an error" do
-        expect { parse_tree }.to raise_error(Grammy::ParseError)
+        expect { tokens }.to raise_error(Grammy::ParseError)
       end
     end
   end
@@ -85,7 +85,7 @@ RSpec.describe Grammy::Parser, :integration do
       let(:input) { "123" }
 
       it "parses a number" do
-        expect(parse_tree).to eq("123")
+        expect(tokens).to eq("123")
       end
     end
 
@@ -93,7 +93,7 @@ RSpec.describe Grammy::Parser, :integration do
       let(:input) { "-" }
 
       it "raises an error" do
-        expect { parse_tree }.to raise_error(Grammy::ParseError)
+        expect { tokens }.to raise_error(Grammy::ParseError)
       end
     end
   end
@@ -103,10 +103,10 @@ RSpec.describe Grammy::Parser, :integration do
 
     context "with a valid input" do
       let(:input) { "x = 1234" }
-      let(:expected_parse_tree) { ["x = ", "1234"] }
+      let(:expected_tokens) { ["x = ", "1234"] }
 
       it "parses and returns the parse tree" do
-        expect(parse_tree).to eq(expected_parse_tree)
+        expect(tokens).to eq(expected_tokens)
       end
     end
 
@@ -114,7 +114,7 @@ RSpec.describe Grammy::Parser, :integration do
       let(:input) { "x=1234" }
 
       it "raises an error" do
-        expect { parse_tree }.to raise_error(Grammy::ParseError)
+        expect { tokens }.to raise_error(Grammy::ParseError)
       end
     end
   end
@@ -124,10 +124,10 @@ RSpec.describe Grammy::Parser, :integration do
 
     context "with a valid input" do
       let(:input) { "x = 1234" }
-      let(:expected_parse_tree) { ["x = ", "1234"] }
+      let(:expected_tokens) { ["x = ", "1234"] }
 
       it "parses and returns the parse tree" do
-        expect(parse_tree).to eq(expected_parse_tree)
+        expect(tokens).to eq(expected_tokens)
       end
     end
 
@@ -135,7 +135,7 @@ RSpec.describe Grammy::Parser, :integration do
       let(:input) { "x=1234" }
 
       it "raises an error" do
-        expect { parse_tree }.to raise_error(Grammy::ParseError)
+        expect { tokens }.to raise_error(Grammy::ParseError)
       end
     end
   end
@@ -145,10 +145,10 @@ RSpec.describe Grammy::Parser, :integration do
 
     context "with a valid input" do
       let(:input) { "x" }
-      let(:expected_parse_tree) { "x" }
+      let(:expected_tokens) { "x" }
 
       it "parses and returns the parse tree" do
-        expect(parse_tree).to eq(expected_parse_tree)
+        expect(tokens).to eq(expected_tokens)
       end
     end
 
@@ -156,7 +156,7 @@ RSpec.describe Grammy::Parser, :integration do
       let(:input) { "z" }
 
       it "raises an error" do
-        expect { parse_tree }.to raise_error(Grammy::ParseError)
+        expect { tokens }.to raise_error(Grammy::ParseError)
       end
     end
   end
@@ -166,10 +166,10 @@ RSpec.describe Grammy::Parser, :integration do
 
     context "with a valid input" do
       let(:input) { "x" }
-      let(:expected_parse_tree) { "x" }
+      let(:expected_tokens) { "x" }
 
       it "parses and returns the parse tree" do
-        expect(parse_tree).to eq(expected_parse_tree)
+        expect(tokens).to eq(expected_tokens)
       end
     end
 
@@ -177,7 +177,7 @@ RSpec.describe Grammy::Parser, :integration do
       let(:input) { "z" }
 
       it "raises an error" do
-        expect { parse_tree }.to raise_error(Grammy::ParseError)
+        expect { tokens }.to raise_error(Grammy::ParseError)
       end
     end
   end
@@ -187,19 +187,19 @@ RSpec.describe Grammy::Parser, :integration do
 
     context "when the input matches the first choice" do
       let(:input) { "x = 1234" }
-      let(:expected_parse_tree) { ["x = ", "1234"] }
+      let(:expected_tokens) { ["x = ", "1234"] }
 
       it "parses and returns the parse tree" do
-        expect(parse_tree).to eq(expected_parse_tree)
+        expect(tokens).to eq(expected_tokens)
       end
     end
 
     context "when the input matches the second choice" do
       let(:input) { "y" }
-      let(:expected_parse_tree) { "y" }
+      let(:expected_tokens) { "y" }
 
       it "parses and returns the parse tree" do
-        expect(parse_tree).to eq(expected_parse_tree)
+        expect(tokens).to eq(expected_tokens)
       end
     end
   end
@@ -209,19 +209,19 @@ RSpec.describe Grammy::Parser, :integration do
 
     context "when the input matches the first choice" do
       let(:input) { "xy" }
-      let(:expected_parse_tree) { ["x", "y"] }
+      let(:expected_tokens) { ["x", "y"] }
 
       it "parses and returns the parse tree" do
-        expect(parse_tree).to eq(expected_parse_tree)
+        expect(tokens).to eq(expected_tokens)
       end
     end
 
     context "when the input matches the second choice" do
       let(:input) { "xz" }
-      let(:expected_parse_tree) { ["x", "z"] }
+      let(:expected_tokens) { ["x", "z"] }
 
       it "parses and returns the parse tree" do
-        expect(parse_tree).to eq(expected_parse_tree)
+        expect(tokens).to eq(expected_tokens)
       end
     end
   end
@@ -231,11 +231,11 @@ RSpec.describe Grammy::Parser, :integration do
 
     context "with a valid input" do
       let(:input) { "(123)" }
-      let(:expected_parse_tree) { ["(", "123", ")"] }
+      let(:expected_tokens) { ["(", "123", ")"] }
 
       it "parses and returns the parse tree" do
-        parse_tree = parser.parse(input)
-        expect(parse_tree).to eq(expected_parse_tree)
+        tokens = parser.parse(input)
+        expect(tokens).to eq(expected_tokens)
       end
     end
   end

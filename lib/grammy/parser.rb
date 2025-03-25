@@ -23,21 +23,14 @@ module Grammy
 
     def initialize(grammar_class, input)
       @scanner = Grammy::Scanner.new(input)
-      @grammar = grammar_class.new
+      @grammar = grammar_class.new(@scanner)
     end
 
     def parse
-      unless result && scanner.pos == scanner.input.size
-        debugger if ENV["DEBUG"]&.to_i == 1 # rubocop:disable Lint/Debugger
-        fail(Grammy::ParseError, "Parsing failed at position #{scanner.pos}")
-      end
+      result = grammar.instance_exec(&grammar.start_rule)
+      result = result.match(scanner) if result.is_a?(Grammy::Combinators::Matcher)
+      fail(Grammy::ParseError, "Parsing failed at position #{scanner.pos}") unless result && scanner.pos == scanner.input.size
       result
-    end
-
-    private def result
-      @result ||= grammar.instance_exec(&grammar.start_rule)
-      @result = @result.match(scanner) if @result.is_a?(Grammy::Combinators::Matcher)
-      @result
     end
   end
 
