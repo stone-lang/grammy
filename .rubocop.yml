@@ -65,3 +65,9 @@ Lint/AmbiguousOperatorPrecedence:
 # Crashes, as of RuboCop 1.74.0.
 Style/WordArray:
   Enabled: false
+
+Performance/StringInclude:
+  Enabled: false
+
+Performance/RedundantMatch:
+  Enabled: false
