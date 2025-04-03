@@ -1,13 +1,34 @@
 # Grammy
 
-## Intro
+Grammy is a tool for generating parsers.
+You describe the language with a grammar written in a Ruby [DSL], similar to [EBNF].
+Grammy dynamically generates a parser from that description.
+You can then use the parser to parse strings into a [parse tree] or an [AST].
 
-Grammy is a simple parser.
-You define the the language to parse with a grammar.
-The grammar is written in a simple BNF-like format.
-Grammy implementats a PEG (Parsing Expression Grammar) parser.
+[![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/version-v0.1-blue.svg)](https://github.com/stone-lang/stone/blob/master/src/stone/version.rb)
+[![Gem Version](https://img.shields.io/gem/v/grammy)](https://rubygems.org/gems/grammy)
+
+## ToC
+
+- [Features](#features)
+- [Usage](#usage)
+- [Combinators](#combinators)
+- [Parse Tree](#parse-tree)
+- [AST](#ast)
+- [Tests](#tests)
+- [License](#license)
+- [Contributing](#contributing)
+- [Changelog](./docs/CHANGELOG.md)
+- [TODO](./docs/TODO.md)
+
+## Features
+
+Grammy implements a [PEG] (Parsing Expression Grammar) parser.
 But that's an implementation detail, possibly subject to change,
 if something better comes along (LPEG, GLR, etc).
+PEG parsers are quick (using "packrat" caching) and easy to use.
+They easily handle ambiguous grammars, left or right recursion, and infinite lookahead.
 
 You can use Grammy to parse complex languages.
 I'm going to be using it to write a full general-purpose programming language.
@@ -20,15 +41,24 @@ But you can also use it to parse simpler languages, like:
 - data formats
 - HTTP headers
 
-Basically, if you have a BNF grammar,
-you can easily use Grammy to parse it.
-
-Grammy is basically a DSL for generating a parser.
-You describe the grammar in a Ruby DSL.
-Grammy dynamically generates a parser from that description.
-You can then use the parser to parse strings.
+Basically, if you have an [EBNF] grammar, it should be easy to use Grammy to parse it.
 
 ## Usage
+
+~~~ ruby
+require "grammy"
+require "arithmetic" # Your grammar file, as below.
+
+parser = Grammy::Parser(Arithmetic)
+input = "1+2*3"
+parse_result = parser.parse(input)
+parse_tree = parse_result.parse_tree
+ast = parse_result.ast
+~~~
+
+I'm still experimenting with a few different DSL syntaxes for the grammar.
+
+### Class Methods
 
 ~~~ ruby
 require 'grammy'
@@ -46,36 +76,169 @@ class Arithmetic < Grammy::Grammar
   # Define any custom combinators.
   def parens(exp) = match("(") + expression + match(")")
 end
+~~~
 
-parser = Grammy::Parser(Arithmetic)
-input = "2+3"
-parse_tree = parser.parse(input)
-parse_tree.to_s == {
-  expression: {
-    term: [
-      {
-        factor: [
-          {
-            number: [
-              "2"
-            ]
-          }
-        ]
-      },
-      {
-        factor: [
-          {
-            number: [
-              "3"
-            ]
-          }
-        ]
-      }
-    ]
-  }
-}
-expect(parse_tree).to eq(expected_parse_tree)
+### Decorated Methods
 
+~~~ ruby
+require 'grammy'
+
+class Arithmetic < Grammy::Grammar
+  # Specify which rule to start with.
+  start :expression
+
+  # Define the rules.
+  rule def expression = term + (match("+") + term)[0..]
+  rule def term = factor + (match("*") + factor)[0..]
+  rule def factor = number | parens(expression)
+  rule def number = match(/\d+/)
+
+  # Define any custom combinators.
+  def parens(exp) = match("(") + expression + match(")")
+end
+~~~
+
+### Instance Methods
+
+~~~ ruby
+require 'grammy'
+
+class Arithmetic < Grammy::Grammar
+  # Specify which rule to start with.
+  start :expression
+
+  # Define the rules.
+  def expression = rule { term + (match("+") + term)[0..] }
+  def term = rule { factor + (match("*") + factor)[0..] }
+  def factor = rule { number | parens(expression) }
+  def number = rule { match(/\d+/) }
+
+  # Define any custom combinators.
+  def parens(exp) = match("(") + expression + match(")")
+end
+~~~
+
+## Combinators
+
+Grammy uses combinators to define the grammar.
+Combinators are functions that take one or more parsers as arguments and return a new parser.
+
+Only a few primitive combinators are needed.
+
+### Match
+
+The `match` combinator is used to match a string or a regular expression.
+
+~~~ ruby
+match("return")
+match(/\d+/)
+~~~
+
+### Sequence
+
+You use the `seq` combinator to specify a sequence of what to match.
+
+This example matches a sequence of a term, a plus sign, and another term.
+
+~~~ ruby
+seq(term, match("+"), term)
+~~~
+
+### Alternatives
+
+The `alt` combinator is used to specify alternatives (multiple choices) of what to match.
+
+This example matches either a plus sign or a minus sign.
+
+~~~ ruby
+alt(match("+"), match("-"))
+~~~
+
+NOTE: This would most likely done with a single `match` call:
+
+~~~ ruby
+match(/[+-]/)
+~~~
+
+### Repetition
+
+The `rep` combinator is used to specify repetition of what to match.
+You can specify the minimum and maximum number of repetitions, using a range.
+
+This example matches one or more digits.
+
+~~~ ruby
+rep(match(/\d+/), 1..)
+~~~
+
+### Operator DSL
+
+You can use `+`, `|`, and `[]` operators in place of the named combinators.
+The `+` operator can be used in place of the `seq` combinator.
+The `|` operator can be used in place of the `alt` combinator.
+The `[]` operator can be used in place of the `rep` combinator.
+
+For example, the following two lines are equivalent:
+
+~~~ ruby
+seq(term, match("+"), term)
+term + match("+") + term
+~~~
+
+## Parse Tree
+
+The internal nodes of the parse tree are ParseTree objects.
+The leaves of the parse tree are Match objects.
+
+The parse tree generated by the example above will look like this:
+
+~~~ ruby
+expected_parse_tree = ParseTree.new("expression", [
+  ParseTree.new("term", [
+    ParseTree.new("factor", [
+      ParseTree.new("number", [
+        Match.new("1")
+      ])
+    ])
+  ]),
+  Match.new("+"),
+  ParseTree.new("term", [
+    ParseTree.new("factor", [
+      ParseTree.new("number", [
+        Match.new("2")
+      ]),
+    Match.new("*"),
+    ParseTree.new("factor", [
+      ParseTree.new("number", [
+        Match.new("3")
+      ])
+    ])
+  ])
+])
+~~~
+
+
+## AST
+
+The AST will be generated from the parse tree.
+The nodes of the AST will be classes that inherit from `AST`.
+
+TODO: How this will work is still TBD.
+It will likely be an additional DSL added to the grammar rules.
+Or it might be a separate DSL.
+
+The AST generated by the example above will look like this:
+
+~~~ ruby
+expected_ast = AST::Arithmetic.new(
+  AST::BinaryOp.new("+", [
+    AST::Number.new("1"),
+    AST::BinaryOp.new("*", [
+      AST::Number.new("2"),
+      AST::Number.new("3")
+    ])
+  ])
+)
 ~~~
 
 ## Tests
@@ -83,3 +246,25 @@ expect(parse_tree).to eq(expected_parse_tree)
 ~~~ shell
 rspec
 ~~~
+
+## License
+
+Copyright (c) 2024-2025 by Craig Buchek and BoochTek, LLC.
+
+This code is licensed under the MIT License.
+See the [LICENSE] for the full details.
+
+## Contributing
+
+[PRs] and [issues] are welcome!
+
+---
+
+[DSL]: https://en.wikipedia.org/wiki/Domain-specific_language
+[EBNF]: https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_form
+[AST]: https://en.wikipedia.org/wiki/Abstract_syntax_tree
+[parse tree]: https://en.wikipedia.org/wiki/Parse_tree
+[PEG]: https://en.wikipedia.org/wiki/Parsing_expression_grammar
+[License]: ./docs/LICENSE.md
+[PRs]: https://github.com/stone-lang/grammy/pulls
+[issues]: https://github.com/stone-lang/grammy/issues

@@ -1,0 +1,116 @@
+# TODO
+
+Here's a list of things I'd like to complete to make Grammy **great**.
+(Most of these are boilerplate, so some might not apply.)
+
+## Scanner
+
+- [ ] line continuation (`\` followed immediately by newline)
+    - [ ] skip leading whitespace on following line
+    - [ ] optional?
+- [ ] indentation
+    - [ ] optional
+
+## Grammar
+
+- [ ] rename combinators to `seq`, `alt`, `rep`
+- [ ] add `_` to canonical names
+- [ ] separate `match` and `regex`?
+- [ ] maybe rename `match` to `str` and `rex`?
+- [ ] try out the decorated methods syntax
+- [ ] try out the instance methods syntax
+
+## Setup
+
+- [x] git (or jj)
+    - [ ] root directory only contains worktrees (git --bare; git worktree add)
+        - [ ] and maybe support files (`.gitignore`, `.vscode`, etc)
+        - [ ] add git aliases for `worktree add -b` and `switch`
+- [x] `.gitignore`
+- [x] GitHub project
+- [x] `.tool-versions`
+- [x] `Gemfile`
+- [x] `.rubocop.yml`
+- [x] `.markdownlint.yml`
+- [x] `.rspec`
+- [ ] `.irbrc`
+
+## Documentation
+
+- [x] comprehensive `README` (and keep it updated)
+    - [x] intro
+    - [x] table of contents
+    - [x] features
+    - [ ] installation
+    - [x] usage
+    - [x] tests
+    - [x] contributing
+    - [ ] badges (see [shields.io](https://shields.io/))
+        - [ ] version
+        - [x] license
+        - [ ] build status (https://github.com/OWNER/REPO/actions/workflows/WORKFLOW/badge.svg
+        )
+        - [ ] test coverage
+        - [ ] dependencies status
+- [x] `TODO`
+- [ ] `CHANGELOG` (and keep it updated)
+- [x] `LICENSE` file (and keep it updated)
+- [ ] code of conduct
+- [ ] FAQ
+
+## Automation
+
+- [ ] `Makefile` for "standard" common tasks
+- [ ] `Rakefile` for "standard" common tasks for Ruby projects
+    - [ ] update version
+        - [ ] verify that CHANGELOG is updated
+    - [ ] upload to RubyGems
+    - [ ] update dependencies
+        - [ ] Ruby
+        - [ ] gems
+        - [ ] RuboCop (see if any rules need updated config)
+- [ ] CI/CD setup (GitHub Actions)
+- [ ] linting
+    - [ ] RuboCop
+    - [ ] markdownlint
+- [ ] test coverage
+- [ ] code quality metrics
+- [ ] pre-commit hooks
+    - [ ] linting
+    - [ ] tests
+
+## Specs
+
+- [x] RSpec setup
+- [ ] unit tests
+    - [x] scanner
+    - [ ] combinators
+    - [ ] grammar
+    - [ ] parser
+- [ ] integration tests
+    - [x] parser
+    - [ ] parse tree
+    - [ ] AST
+- [ ] performance tests
+    - [ ] benchmarks
+- [ ] property (fuzzing) tests
+
+## Gem
+
+- [ ] create a gem
+    - [ ] `gemspec`
+    - [ ] upload to RubyGems
+- [ ] CLI
+    - [ ] `bin/grammy`
+    - [ ] install with the gem
+    - [ ] `--help`
+    - [ ] `--version`
+    - [ ] `<grammar_file>` to output a serialized parse tree, with input from `STDIN`
+
+## Support
+
+- [ ] VS Code configuration
+- [ ] snippets
+- [ ] ISSUES_TEMPLATE
+- [ ] PULL_REQUEST_TEMPLATE
+- [ ] `.editorconfig`
