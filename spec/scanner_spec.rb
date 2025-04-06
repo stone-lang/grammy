@@ -1,117 +1,113 @@
-require "rspec"
-require "scanner"
+require "spec_helper"
+require "stringio"
 
-RSpec.describe Scanner do
+require "grammy/scanner"
+
+RSpec.describe Grammy::Scanner do
   subject(:scanner) { described_class.new(input) }
-  let(:input) { "hello world" }
+  let(:input) { "hello\n123b456\nworld" }
 
+  context "with IO input" do
+    let(:input) { StringIO.new("abc") }
 
-  describe "#match" do
-    context "when matching a literal string" do
-      it "matches the literal at the beginning of the input" do
-        match = scanner.match("hello")
-        expect(match).not_to be_nil
-        expect(match.matched_string).to eq("hello")
-        expect(match.start_position).to eq(Position.new(1, 1, 0))
-        expect(match.end_position).to eq(Position.new(1, 1 + "hello".length, "hello".length))
-      end
+    it "also works" do
+      expect(scanner.match("a").matched_string).to eq("a")
+    end
+  end
 
-      it "returns nil if the literal does not match at the current position" do
-        result = scanner.match("world")
-        expect(result).to be_nil
-      end
-
-      it "advances the scanner position after a successful match" do
-        scanner.match("hello")
-        expect(scanner.current_index).to eq(5)
-      end
-
-      it "does not advance the scanner position if the match fails" do
-        pos_before = scanner.current_index
-        result = scanner.match("not")
-        expect(result).to be_nil
-        expect(scanner.current_index).to eq(pos_before)
-      end
+  describe "#match with a string" do
+    it "returns nil when string does not match" do
+      expect(scanner.match("world")).to be_nil
     end
 
-    context "when matching using a regex" do
-      it "matches a regex pattern and returns the correct Match object" do
-        match = scanner.match(/\w+/)
-        expect(match).not_to be_nil
-        expect(match.matched_string).to eq("hello")
-        expect(match.start_position).to eq(Position.new(1, 1, 0))
-        expect(match.end_position).to eq(Position.new(1, 6, 5))
-      end
+    it "matches literal string" do
+      match = scanner.match("hello")
+      expect(match.matched_string).to eq("hello")
+    end
 
-      it "returns nil if the regex does not match the current input" do
-        scanner.match("hello")
-        result = scanner.match(/world/)
-        expect(result).to be_nil
-      end
+    it "does not advance position on failed literal match" do
+      failed_match = scanner.match("x")
+      expect(failed_match).to be_nil
+      match = scanner.match("hello")
+      expect(match.matched_string).to eq("hello")
+    end
+  end
+
+  describe "match with a regex" do
+    it "returns nil when regex does not match" do
+      expect(scanner.match(/\d+/)).to be_nil
+    end
+
+    it "matches regex" do
+      scanner.match("hello\n")
+      match = scanner.match(/\d+/)
+      expect(match.matched_string).to eq("123")
     end
   end
 
   describe "position tracking" do
-    context "with multi-line input" do
-      subject(:scanner) { described_class.new(input) }
-      let(:input) { "line1\nline2" }
+    it "tracks positions correctly, even across linefeeds" do
+      match1 = scanner.match("hello")
+      expect(match1.start_position).to eq(Grammy::Position.new(1, 1, 0))
+      expect(match1.end_position).to eq(Grammy::Position.new(1, 5, 4))
 
+      newline = scanner.match("\n")
+      expect(newline.start_position).to eq(Grammy::Position.new(1, 6, 5))
+      expect(newline.end_position).to eq(Grammy::Position.new(1, 6, 5))
 
-      it "correctly tracks positions for a single line match" do
-        match = scanner.match(/line1/)
-        expect(match.start_position).to eq(Position.new(1, 1, 0))
-        expect(match.end_position).to eq(Position.new(1, 6, 5))
-      end
+      match2 = scanner.match(/\d+b\d+/)
+      expect(match2.start_position).to eq(Grammy::Position.new(2, 1, 6))
+      expect(match2.end_position).to eq(Grammy::Position.new(2, 7, 12))
 
-      it "correctly updates row, column, and index for multi-line matches" do
-        match1 = scanner.match(/line1/)
-        expect(match1.start_position).to eq(Position.new(1, 1, 0))
-        expect(match1.end_position).to eq(Position.new(1, 6, 5))
-
-        newline = scanner.match("\n")
-        expect(newline.matched_string).to eq("\n")
-        expect(newline.start_position).to eq(Position.new(1, 6, 5))
-        expect(newline.end_position).to eq(Position.new(2, 1, 6))
-
-        match2 = scanner.match(/line2/)
-        expect(match2.start_position).to eq(Position.new(2, 1, 6))
-        expect(match2.end_position).to eq(Position.new(2, 6, 11))
-      end
+      match3 = scanner.match("\nworld")
+      expect(match3.start_position).to eq(Grammy::Position.new(2, 8, 13))
+      expect(match3.end_position).to eq(Grammy::Position.new(3, 5, 18))
     end
   end
 
-  describe "backtracking with mark/rollback/commit" do
-    it "supports mark and rollback to revert consumed input" do
-      initial_index = scanner.current_index
-      scanner.mark
-      match = scanner.match("hello")
-      expect(match).not_to be_nil
-      expect(scanner.current_index).to eq(initial_index + 5)
-      scanner.rollback
-      expect(scanner.current_index).to eq(initial_index)
-    end
-
-    it "supports commit to confirm consumption and disable rollback" do
-      scanner.mark
-      match = scanner.match("hello")
-      expect(match).not_to be_nil
-      scanner.commit
-      scanner.rollback
-      expect(scanner.current_index).to eq(5)
-    end
-
-    it "allows nested marks and corresponding rollbacks" do
-      scanner.mark
+  describe "backtracking" do
+    it "can set scanning position back to mark" do
+      mark = scanner.mark
       scanner.match("hello")
-      first_mark_index = scanner.current_index
-
-      scanner.mark
-      scanner.match(" ")
-      expect(scanner.current_index).to eq(first_mark_index + 1)
-
-      scanner.rollback
-      scanner.rollback
-      expect(scanner.current_index).to eq(0)
+      scanner.match("\n123")
+      scanner.backtrack(mark)
+      match = scanner.match("hello")
+      expect(match.matched_string).to eq("hello")
     end
+
+    it "can consume mark so backtracking is limited" do
+      mark = scanner.mark
+      scanner.match("hello")
+      scanner.consume(mark)
+      expect { scanner.backtrack(mark) }.to raise_error(ArgumentError)
+    end
+
+    it "supports nested marks" do
+      outer = scanner.mark
+      scanner.match("hello")
+      inner = scanner.mark
+      scanner.match("\n123")
+      scanner.backtrack(inner)
+      scanner.match("\n123")
+      scanner.match("b456")
+      scanner.backtrack(outer)
+      match = scanner.match("hello")
+      expect(match.matched_string).to eq("hello")
+    end
+
+    it "cannot consume a mark twice" do
+      mark = scanner.mark
+      scanner.consume(mark)
+      expect { scanner.consume(mark) }.to raise_error(ArgumentError)
+    end
+
+    it "cannot consume outer mark without consuming inner mark first" do
+      outer = scanner.mark
+      scanner.match("hello")
+      _inner = scanner.mark
+      scanner.match("\n123")
+      expect { scanner.consume(outer) }.to raise_error(ArgumentError)
+    end
+
   end
 end

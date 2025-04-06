@@ -46,7 +46,7 @@ RSpec/SpecFilePathFormat:
 RSpec/MultipleExpectations:
   Max: 10
 RSpec/ExampleLength:
-  Max: 10
+  Max: 20
 
 RSpec/EmptyLineAfterSubject:
   Enabled: false
@@ -70,4 +70,10 @@ Performance/StringInclude:
   Enabled: false
 
 Performance/RedundantMatch:
+  Enabled: false
+
+# Prefer `class X < Data.define(...)` over `X = Data.define(...)`.
+# It makes nested constants work as expected.
+# See https://allaboutcoding.ghinda.com/more-about-how-to-create-a-data-class-in-ruby for details.
+Style/DataInheritance:
   Enabled: false
