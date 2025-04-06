@@ -63,21 +63,9 @@ module Grammy
     private def match_text(text)
       return nil unless text && !text.empty?
       start_pos = @position
-      end_pos = advance_position(start_pos, text[0...-1])
-      @position = advance_position(end_pos, text[-1])
+      end_pos = start_pos.advance(text[0...-1])
+      @position = end_pos.advance(text[-1])
       Match.new(text, start_pos, end_pos)
-    end
-
-    private def advance_position(position, text)
-      newline_count = text.count("\n")
-      new_index = position.index + text.length
-      new_row = position.row + newline_count
-      if newline_count.zero?
-        new_column = position.column + text.length
-      else
-        new_column = text.length - text.rindex("\n")
-      end
-      Position.new(new_row, new_column, new_index)
     end
   end
 
