@@ -77,3 +77,14 @@ Performance/RedundantMatch:
 # See https://allaboutcoding.ghinda.com/more-about-how-to-create-a-data-class-in-ruby for details.
 Style/DataInheritance:
   Enabled: false
+
+# Only disabling this so I can do 1-line `def` with a comment.
+# EXAMPLE: `def foo = 123 # see xyz`
+Style/CommentedKeyword:
+  Enabled: false
+
+# Count `new` as 1 line, for cases where we create nested structures.
+Metrics/MethodLength:
+  Max: 10
+  CountAsOne:
+    - new

@@ -87,6 +87,7 @@ Here's a list of things I'd like to complete to make Grammy **great**.
     - [ ] combinators
     - [ ] grammar
     - [ ] parser
+    - [x] parse tree
 - [ ] integration tests
     - [x] parser
     - [ ] parse tree
