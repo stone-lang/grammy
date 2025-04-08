@@ -61,7 +61,7 @@ Here's a list of things I'd like to complete to make Grammy **great**.
 
 ## Automation
 
-- [ ] `Makefile` for "standard" common tasks
+- [x] `Makefile` for "standard" common tasks
 - [ ] `Rakefile` for "standard" common tasks for Ruby projects
     - [ ] update version
         - [ ] verify that CHANGELOG is updated
@@ -71,9 +71,9 @@ Here's a list of things I'd like to complete to make Grammy **great**.
         - [ ] gems
         - [ ] RuboCop (see if any rules need updated config)
 - [ ] CI/CD setup (GitHub Actions)
-- [ ] linting
-    - [ ] RuboCop
-    - [ ] markdownlint
+- [x] linting
+    - [x] RuboCop
+    - [x] markdownlint
 - [ ] test coverage
 - [ ] code quality metrics
 - [ ] pre-commit hooks
@@ -112,6 +112,8 @@ Here's a list of things I'd like to complete to make Grammy **great**.
 ## Support
 
 - [ ] VS Code configuration
+    - [ ] tasks (`launch.json`)
+    - [ ] recommended extensions
 - [ ] snippets
 - [ ] ISSUES_TEMPLATE
 - [ ] PULL_REQUEST_TEMPLATE

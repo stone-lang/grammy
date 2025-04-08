@@ -54,3 +54,13 @@ build-iPhoneSimulator/
 
 # Used by RuboCop. Remote config files pulled in from inherit_from directive.
 .rubocop-https?--*
+
+
+## Node
+
+# Dependency directories
+node_modules/
+
+# NOTE: The package file is not normally ignored, but we're only using NPM for linting Markdown.
+package.json
+package-lock.json
