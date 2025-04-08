@@ -71,5 +71,21 @@ RSpec.describe Grammy::Grammar do
       end
     end
 
+    context "with an `alt` combinator" do
+
+      before do
+        grammar.class_eval do
+          rule(:alt1) { alt(match(/\d+/), match("abc")) }
+        end
+      end
+
+      let(:rule) { grammar_instance.rule(:alt1) }
+
+      it "returns a Match with the matched pattern" do
+        match_result = rule.call.match(scanner)
+        expect(match_result.matched_string).to eq("abc")
+      end
+    end
+
   end
 end
