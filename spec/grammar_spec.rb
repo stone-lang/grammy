@@ -53,5 +53,23 @@ RSpec.describe Grammy::Grammar do
       end
     end
 
+    context "with a `seq` combinator" do
+
+      before do
+        grammar.class_eval do
+          rule(:seq1) { seq(match("abc"), match("123")) }
+        end
+      end
+
+      let(:rule) { grammar_instance.rule(:seq1) }
+
+      it "returns a Match for each match of the string" do
+        match_result = rule.call.match(scanner)
+        expect(match_result).to be_an(Array)
+        expect(match_result.first.matched_string).to eq("abc")
+        expect(match_result.last.matched_string).to eq("123")
+      end
+    end
+
   end
 end
