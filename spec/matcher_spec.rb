@@ -6,12 +6,22 @@ RSpec.describe Grammy::Matcher do
 
   subject(:matcher) { described_class.new(pattern) }
   let(:pattern) { /abc/ }
-  let(:scanner) { Grammy::Scanner.new("abcdef") }
+  let(:scanner) { Grammy::Scanner.new(input) }
+  let(:input) { "abcdef" }
+  let(:match_result) { matcher.match(scanner) }
 
   describe "#match" do
     it "returns a Matcher with the matched pattern" do
-      expect(matcher.match(scanner).matched_string).to eq("abc")
+      expect(match_result.matched_string).to eq("abc")
     end
-  end
 
+    context "when there is no match" do
+      let(:input) { "no matches" }
+
+      it "fails (returns nil)" do
+        expect(match_result).to be_nil
+      end
+    end
+
+  end
 end

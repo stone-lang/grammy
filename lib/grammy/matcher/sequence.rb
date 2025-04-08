@@ -5,10 +5,10 @@ module Grammy
   class Matcher
     class Sequence < Matcher
 
-      def initialize(*matchers) = @matchers = matchers
+      def initialize(*submatchers) = @submatchers = submatchers
 
       def match(scanner)
-        @matchers.reduce([]) do |results, matcher|
+        @submatchers.reduce([]) do |results, matcher|
           m = matcher.match(scanner)
           return nil unless m
           results << m

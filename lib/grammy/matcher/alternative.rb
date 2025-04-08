@@ -5,10 +5,10 @@ module Grammy
   class Matcher
     class Alternative < Matcher
 
-      def initialize(*matchers) = @matchers = matchers
+      def initialize(*alternatives) = @alternatives = alternatives
 
       def match(scanner)
-        @matchers.each do |matcher|
+        @alternatives.each do |matcher|
           mark = scanner.mark
           result = matcher.match(scanner)
           return result if result
