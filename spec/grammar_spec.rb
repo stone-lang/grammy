@@ -1,4 +1,5 @@
 require "grammy/grammar"
+require "grammy/match"
 
 
 RSpec.describe Grammy::Grammar do
@@ -30,4 +31,27 @@ RSpec.describe Grammy::Grammar do
     end
   end
 
+  describe "using primitive combinators in a rule" do
+
+    let(:scanner) { Grammy::Scanner.new(input) }
+    let(:input) { "abc123" }
+
+    context "with a `match` combinator" do
+
+      before do
+        grammar.class_eval do
+          rule(:match1) { match("abc") }
+        end
+      end
+
+      let(:rule) { grammar_instance.rule(:match1) }
+
+      it "returns a Match matching the string" do
+        match_result = rule.call.match(scanner)
+        expect(match_result).to be_a(Grammy::Match)
+        expect(match_result.matched_string).to eq("abc")
+      end
+    end
+
+  end
 end
