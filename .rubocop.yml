@@ -84,7 +84,9 @@ Style/CommentedKeyword:
   Enabled: false
 
 # Count `new` as 1 line, for cases where we create nested structures.
-Metrics/MethodLength:
-  Max: 10
-  CountAsOne:
-    - new
+# FIXME: CountAsOne only accepts array/hash/heredoc/method_call.
+# I really want to have it just count `new` calls as a single line.
+# Metrics/MethodLength:
+#   Max: 10
+#   CountAsOne:
+#     - new

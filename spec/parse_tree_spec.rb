@@ -1,6 +1,8 @@
 require "grammy/parse_tree"
 
+
 RSpec.describe Grammy::ParseTree do
+
   subject(:parse_tree) { nested_tree }
 
   it "prints, with children indented 4 spaces" do
@@ -14,16 +16,14 @@ RSpec.describe Grammy::ParseTree do
   end
 
   def nested_tree
-    Grammy::ParseTree.new(
-      name: "Parent",
-      children: [
-        Grammy::ParseTree.new(
-          name: "Child 1", children: [
-            Grammy::ParseTree.new(name: "Grandchild", children: []),
-          ]
-        ),
-        Grammy::ParseTree.new(name: "Child 2", children: [])
+    Grammy::ParseTree.new("Parent") {
+      [
+        Grammy::ParseTree.new("Child 1") {
+          Grammy::ParseTree.new("Grandchild")
+        },
+        Grammy::ParseTree.new("Child 2")
       ]
-    )
+    }
   end
+
 end
