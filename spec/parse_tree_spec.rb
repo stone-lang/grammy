@@ -1,5 +1,3 @@
-require "spec_helper"
-
 require "grammy/parse_tree"
 
 RSpec.describe Grammy::ParseTree do

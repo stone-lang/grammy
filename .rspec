@@ -1,3 +1,5 @@
--I src
+-I lib
 --require spec_helper
+--require debug
+--require pry
 --no-profile

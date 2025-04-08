@@ -34,6 +34,7 @@ Here's a list of things I'd like to complete to make Grammy **great**.
 - [x] `.markdownlint.yml`
 - [x] `.rspec`
 - [ ] `.irbrc`
+- [ ] `.pryrc`
 
 ## Documentation
 
