@@ -1,7 +1,9 @@
 require "grammy/grammar"
+require "grammy/scanner"
 require "grammy/match"
 
 
+# rubocop:disable Naming/VariableNumber
 RSpec.describe Grammy::Grammar do
 
   subject(:grammar_instance) { grammar.new(scanner) }
@@ -87,5 +89,38 @@ RSpec.describe Grammy::Grammar do
       end
     end
 
+    context "with a `rep` combinator" do
+
+      before do
+        grammar.class_eval do
+          rule(:rep0_1) { rep(match(/\d+x/), 0..1) }
+          rule(:rep1_) { rep(match(/\d+x/), 1..) }
+          rule(:rep0_) { rep(match("abc"), 0..) }
+        end
+      end
+
+      let(:input) { "123x1234x54321xY" }
+      let(:rule0_1) { grammar_instance.rule(:rep0_1) }
+      let(:rule1_) { grammar_instance.rule(:rep1_) }
+      let(:rule0_) { grammar_instance.rule(:rep0_) }
+
+      it "allows 0 or 1 matches" do
+        match_result = rule0_1.call.match(scanner)
+        expect(match_result.map(&:matched_string)).to eq(["123x"])
+      end
+
+      it "allows 1 or more matches" do
+        match_result = rule1_.call.match(scanner)
+        expect(match_result.map(&:matched_string)).to eq(["123x", "1234x", "54321x"])
+      end
+
+      it "allows no matches" do
+        match_result = rule0_.call.match(scanner)
+        expect(match_result).to be_empty
+      end
+
+    end
+
   end
 end
+# rubocop:enable Naming/VariableNumber
