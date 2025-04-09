@@ -8,11 +8,7 @@ module Grammy
       def initialize(*submatchers) = @submatchers = submatchers
 
       def match(scanner)
-        @submatchers.reduce([]) do |results, matcher|
-          m = matcher.match(scanner)
-          return nil unless m
-          results << m
-        end
+        @submatchers.map { |matcher| matcher.match(scanner) || (return nil) }
       end
 
     end
