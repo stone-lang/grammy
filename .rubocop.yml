@@ -7,12 +7,11 @@ plugins:
 inherit_from:
   - https://raw.githubusercontent.com/booch/config_files/master/ruby/rubocop.yml
 
-# Ignore some files. NOTE: Exclude does not add to any existing Exclude directives.
+# WARNING: Include and Exclude directives are **not** additive! They wipe out any existing values.
 AllCops:
   TargetRubyVersion: 3.4
+  # Fail on any new cops that are added. I'll address them every time I upgrade RuboCop.
   NewCops: enable
-  Exclude:
-    - 'vendor/**/*'
 
 # Allow longer lines.
 Layout/LineLength:
