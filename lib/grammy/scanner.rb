@@ -1,9 +1,13 @@
 require "grammy/position"
 require "grammy/match"
 
+
 module Grammy
 
   class Scanner
+
+    attr_reader :position, :input
+
     def initialize(input)
       @input = input.is_a?(String) ? input : input.read
       @position = Position.new(1, 1, 0)
@@ -54,6 +58,10 @@ module Grammy
       @marks.pop
     end
 
+    def finished?
+      @position.index == @input.size
+    end
+
     private def remaining_input
       @input[@position.index..]
     end
@@ -67,6 +75,6 @@ module Grammy
       @position = end_pos.advance(text[-1])
       Match.new(text, start_pos, end_pos)
     end
-  end
 
+  end
 end

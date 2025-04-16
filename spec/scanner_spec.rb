@@ -2,7 +2,9 @@ require "stringio"
 
 require "grammy/scanner"
 
+
 RSpec.describe Grammy::Scanner do
+
   subject(:scanner) { described_class.new(input) }
   let(:input) { "hello\n123b456\nworld" }
 
@@ -107,6 +109,6 @@ RSpec.describe Grammy::Scanner do
       scanner.match("\n123")
       expect { scanner.consume(outer) }.to raise_error(ArgumentError)
     end
-
   end
+
 end
