@@ -16,7 +16,7 @@ console: bundle
 lint: markdownlint rubocop
 
 rspec: bundle
-	bundle exec rspec
+	DEBUG=0 bundle exec rspec
 
 bundle:
 ifneq ($(BUNDLE_CHECK), 0)
