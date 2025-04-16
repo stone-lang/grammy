@@ -3,7 +3,7 @@ require "grammy/scanner"
 require "grammy/match"
 
 
-# rubocop:disable Naming/VariableNumber
+# rubocop:disable Naming/VariableNumber,RSpec/MultipleMemoizedHelpers
 RSpec.describe Grammy::Grammar do
 
   subject(:grammar) do
@@ -37,7 +37,9 @@ RSpec.describe Grammy::Grammar do
 
     let(:scanner) { Grammy::Scanner.new(input) }
     let(:input) { "abc123" }
-    let(:match_result) { grammar_instance.execute_rule(rule).match(scanner) }
+    let(:match_results) { results.map(&:matched_string) }
+    let(:results) { parse_tree.leaves.flatten }
+    let(:parse_tree) { grammar_instance.execute_rule(rule) }
 
     context "with a `match` combinator" do
 
@@ -50,8 +52,9 @@ RSpec.describe Grammy::Grammar do
       let(:rule) { :match1 }
 
       it "returns a Match matching the string" do
-        expect(match_result).to be_a(Grammy::Match)
-        expect(match_result.matched_string).to eq("abc")
+        expect(parse_tree.name).to eq("match1")
+        expect(results.map(&:class)).to eq([Grammy::Match])
+        expect(match_results).to eq(["abc"])
       end
     end
 
@@ -66,9 +69,8 @@ RSpec.describe Grammy::Grammar do
       let(:rule) { :seq1 }
 
       it "returns a Match for each match of the string" do
-        expect(match_result).to be_an(Array)
-        expect(match_result.first.matched_string).to eq("abc")
-        expect(match_result.last.matched_string).to eq("123")
+        expect(parse_tree.name).to eq("seq1")
+        expect(match_results).to eq(["abc", "123"])
       end
     end
 
@@ -83,7 +85,8 @@ RSpec.describe Grammy::Grammar do
       let(:rule) { :alt1 }
 
       it "returns a Match with the matched pattern" do
-        expect(match_result.matched_string).to eq("abc")
+        expect(parse_tree.name).to eq("alt1")
+        expect(match_results).to eq(["abc"])
       end
     end
 
@@ -100,22 +103,26 @@ RSpec.describe Grammy::Grammar do
       let(:input) { "123x1234x54321xY" }
 
       it "allows 0 or 1 matches" do
-        match_result = grammar_instance.execute_rule(:rep0_1).match(scanner)
-        expect(match_result.map(&:matched_string)).to eq(["123x"])
+        parse_tree = grammar_instance.execute_rule(:rep0_1)
+        match_results = parse_tree.leaves.map(&:matched_string)
+        expect(parse_tree.name).to eq("rep0_1")
+        expect(match_results).to eq(["123x"])
       end
 
       it "allows 1 or more matches" do
-        match_result = grammar_instance.execute_rule(:rep1_).match(scanner)
-        expect(match_result.map(&:matched_string)).to eq(["123x", "1234x", "54321x"])
+        parse_tree = grammar_instance.execute_rule(:rep1_)
+        match_results = parse_tree.leaves.map(&:matched_string)
+        expect(match_results).to eq(["123x", "1234x", "54321x"])
       end
 
       it "allows no matches" do
-        match_result = grammar_instance.execute_rule(:rep0_).match(scanner)
-        expect(match_result).to be_empty
+        parse_tree = grammar_instance.execute_rule(:rep0_)
+        match_results = parse_tree.leaves.map(&:matched_string)
+        expect(match_results).to be_empty
       end
 
     end
 
   end
 end
-# rubocop:enable Naming/VariableNumber
+# rubocop:enable Naming/VariableNumber,RSpec/MultipleMemoizedHelpers

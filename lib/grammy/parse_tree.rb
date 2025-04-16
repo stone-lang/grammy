@@ -4,8 +4,8 @@ module Grammy
 
     # Make it easier to create nested trees.
     def self.new(name, children = [], &block)
-      children = Array(yield) if block
-      super(name:, children:)
+      children = yield if block
+      super(name:, children: Array(children))
     end
 
     def leaves = children.flat_map { it.is_a?(self.class) ? it.leaves : it }
