@@ -2,6 +2,7 @@
 
 plugins:
   - rubocop-rspec
+  - rubocop-md
   - rubocop-performance
 
 inherit_from:
@@ -12,6 +13,12 @@ AllCops:
   TargetRubyVersion: 3.4
   # Fail on any new cops that are added. I'll address them every time I upgrade RuboCop.
   NewCops: enable
+
+# FIXME: I can't get any Ruby code sections in Markdown files to show any offenses.
+# This assumes that unmarked code blocks are Ruby.
+Markdown:
+  WarnInvalid: true
+  Autodetect: true
 
 # Allow longer lines.
 Layout/LineLength:
