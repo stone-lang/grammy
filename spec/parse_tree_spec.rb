@@ -19,6 +19,18 @@ RSpec.describe Grammy::ParseTree do
     end
   end
 
+  describe "#leaves" do
+
+    it "returns an empty array for a tree with no leaves" do
+      expect(empty_tree.leaves).to be_empty
+    end
+
+    it "returns all leaves in the parse tree" do
+      expected_leaves = ["String Child", "String Grandchild"]
+      expect(nested_tree.leaves).to match_array(expected_leaves)
+    end
+  end
+
   def nested_tree # rubocop:disable Metrics/MethodLength
     Grammy::ParseTree.new("Parent") {
       [
@@ -32,6 +44,10 @@ RSpec.describe Grammy::ParseTree do
         Grammy::ParseTree.new("Child 2")
       ]
     }
+  end
+
+  def empty_tree
+    Grammy::ParseTree.new("Empty")
   end
 
 end

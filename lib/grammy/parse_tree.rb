@@ -8,6 +8,8 @@ module Grammy
       super(name:, children:)
     end
 
+    def leaves = children.flat_map { it.is_a?(self.class) ? it.leaves : it }
+
     def to_s(level = 0) = ([to_s_base(level)] + children.map{ to_s_child(it, level) }).join("\n")
     def inspect = to_s
     def to_h = {name:, children: children.map(&:to_h)}
