@@ -8,13 +8,14 @@ module Grammy
       super(name:, children:)
     end
 
-    def to_s(level = 0) = ([to_s_base(level)] + to_s_children(level)).join("\n")
+    def to_s(level = 0) = ([to_s_base(level)] + children.map{ to_s_child(it, level) }).join("\n")
     def inspect = to_s
     def to_h = {name:, children: children.map(&:to_h)}
     def pretty_print(pp) = pp.text inspect # For IRB output.
 
-    private def to_s_base(level) = "#{indent(level)}#<ParseTree name=#{name.inspect}>"
-    private def to_s_children(level) = children.map { |child| child.to_s(level + 1) }
+    private def to_s_base(level) = "#{indent(level)}#<ParseTree #{name.inspect}>"
+    private def to_s_child(child, level) = child.is_a?(Grammy::ParseTree) ? child.to_s(level + 1) : to_s_leaf(child, level + 1)
+    private def to_s_leaf(leaf, level) = "#{indent(level)}#{leaf}"
     private def indent(level) = " " * (level * INDENTATION)
 
   end

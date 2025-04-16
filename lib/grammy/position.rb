@@ -13,5 +13,10 @@ module Grammy
       end
       Position.new(new_row, new_column, new_index)
     end
+
+    def to_s = "(#{row},#{column})"
+    def inspect = to_s
+    def pretty_print(pp) = pp.text inspect # For IRB output.
+
   end
 end
