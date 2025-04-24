@@ -1,9 +1,8 @@
 require "grammy/combinator/primitives"
-require "grammy/scanner"
 require "grammy/matcher"
 require "grammy/errors"
+require "grammy/parser"
 require "grammy/parse_tree"
-require "grammy/parse_result"
 
 
 module Grammy
@@ -30,12 +29,7 @@ module Grammy
 
       # Parse an input using the grammar.
       def parse(input, start_rule = root_rule)
-        scanner = Grammy::Scanner.new(input)
-        instance = self.new(scanner)
-        result = instance.execute_rule(start_rule)
-        fail(Grammy::ParseError, "Parsing failed at position #{scanner.position}") if start_rule == root_rule && !scanner.finished?
-        fail(Grammy::ParseError, "Parsing failed at position #{scanner.position}") if result.nil? || result.empty? && !scanner.input.empty?
-        Grammy::ParseResult.new(result)
+        Grammy::Parser.new(self, input, start_rule).parse
       end
     end
 
