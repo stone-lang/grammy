@@ -3,7 +3,7 @@ BUNDLE_CHECK := $(shell bundle check >/dev/null ; echo $$?)
 
 all: setup test lint
 
-setup: node_modules/.bin/markdownlint-cli2
+setup: bun node_modules/.bin/markdownlint-cli2
 
 test: specs
 
@@ -29,9 +29,12 @@ rubocop:
 	bundle exec rubocop .
 
 markdownlint: node_modules/.bin/markdownlint-cli2
-	@markdownlint-cli2 '**/*.md' '!vendor' '!node_modules'
+	@bunx markdownlint-cli2 '**/*.md' '!vendor' '!node_modules'
 
-node_modules/.bin/markdownlint:
-	@npm install markdownlint-cli2
+node_modules/.bin/markdownlint-cli2:
+	@bun install markdownlint-cli2
 
-.PHONY: all setup test specs console lint rspec bundle rubocop markdownlint
+bun:
+	@which bun >/dev/null || mise install bun || curl -fsSL https://bun.sh/install | bash
+
+.PHONY: all setup test specs console lint rspec bundle rubocop markdownlint bun
