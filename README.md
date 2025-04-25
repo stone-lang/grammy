@@ -3,7 +3,8 @@
 Grammy is a tool for generating parsers.
 You describe the language with a grammar written in a Ruby [DSL], similar to [EBNF].
 Grammy dynamically generates a parser from that description.
-You can then use the parser to parse strings into a [parse tree] or an [AST].
+You can then use the parser to parse strings into a [parse tree],
+and create an [AST] from the parse tree.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/badge/version-v0.1-blue.svg)](https://github.com/stone-lang/stone/blob/master/src/stone/version.rb)
@@ -49,9 +50,8 @@ Basically, if you have an [EBNF] grammar, it should be easy to use Grammy to par
 require "grammy"
 require "arithmetic" # Your grammar file, as below.
 
-parser = Grammy::Parser(Arithmetic)
 input = "1+2*3"
-parse_result = parser.parse(input)
+parse_result = Arithmetic.parse(input)
 parse_tree = parse_result.parse_tree
 ast = parse_result.ast
 ~~~
@@ -65,7 +65,7 @@ require 'grammy'
 
 class Arithmetic < Grammy::Grammar
   # Specify which rule to start with.
-  start :expression
+  root :expression
 
   # Define the rules.
   rule(:expression) { term + (match("+") + term)[0..] }
@@ -85,7 +85,7 @@ require 'grammy'
 
 class Arithmetic < Grammy::Grammar
   # Specify which rule to start with.
-  start :expression
+  root :expression
 
   # Define the rules.
   rule def expression = term + (match("+") + term)[0..]
