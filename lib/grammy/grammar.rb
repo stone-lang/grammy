@@ -3,7 +3,6 @@ require "grammy/matcher"
 require "grammy/errors"
 require "grammy/scanner"
 require "grammy/parse_tree"
-require "grammy/parse_result"
 
 
 module Grammy
@@ -34,7 +33,7 @@ module Grammy
         grammar = self.new(scanner)
         result = grammar.execute_rule(start_rule)
         fail(Grammy::ParseError, "Parsing failed at position #{scanner.position}") if result.nil? || result.empty? && !scanner.input.empty?
-        Grammy::ParseResult.new(result)
+        result
       end
     end
 

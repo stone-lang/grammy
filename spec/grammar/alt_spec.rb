@@ -6,10 +6,9 @@ class AltGrammar < Grammy::Grammar
 end
 
 RSpec.describe AltGrammar do
-  subject(:parse_result) { grammar.parse(input) }
+  subject(:parse_tree) { grammar.parse(input) }
   let(:grammar) { described_class }
-  let(:tokens) { parse_result.tokens }
-  let(:parse_tree) { parse_result.parse_tree }
+  let(:tokens) { parse_tree.tokens }
 
   context "with the first alternative" do
     let(:input) { "hello" }

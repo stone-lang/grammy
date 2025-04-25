@@ -51,9 +51,8 @@ require "grammy"
 require "arithmetic" # Your grammar file, as below.
 
 input = "1+2*3"
-parse_result = Arithmetic.parse(input)
-parse_tree = parse_result.parse_tree
-ast = parse_result.ast
+parse_tree = Arithmetic.parse(input)
+ast = parse_tree.ast
 ~~~
 
 I'm still experimenting with a few different DSL syntaxes for the grammar.

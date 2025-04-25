@@ -16,9 +16,8 @@ class OptionalGrammar < Grammy::Grammar
 end
 
 RSpec.describe Grammy::Matcher::Repetition do
-  subject(:parse_result) { grammar.parse(input) }
-  let(:tokens) { parse_result.tokens }
-  let(:parse_tree) { parse_result.parse_tree }
+  subject(:parse_tree) { grammar.parse(input) }
+  let(:tokens) { parse_tree.tokens }
 
   describe ZeroOrMoreGrammar do
     let(:grammar) { described_class }
