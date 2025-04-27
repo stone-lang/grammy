@@ -7,6 +7,8 @@ gem "rspec"
 
 # Console
 gem "irb"
+gem "reline", github: "ruby/reline", branch: "master"
+
 gem "pry"
 gem "amazing_print"
 gem "rainbow" # ANSI colors for the console

@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/ruby/reline.git
+  revision: 97bd40a42979e3294c1f67f3d1aeec70ebd14518
+  branch: master
+  specs:
+    reline (0.6.1)
+      io-console (~> 0.5)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -20,7 +28,7 @@ GEM
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    json (2.10.2)
+    json (2.11.3)
     language_server-protocol (3.17.0.4)
     lint_roller (1.1.0)
     logger (1.7.0)
@@ -51,8 +59,6 @@ GEM
     rdoc (6.13.1)
       psych (>= 4.0.0)
     regexp_parser (2.10.0)
-    reline (0.6.1)
-      io-console (~> 0.5)
     rexml (3.4.1)
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
@@ -67,7 +73,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
     rspec-support (3.13.2)
-    rubocop (1.75.2)
+    rubocop (1.75.3)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -119,6 +125,7 @@ DEPENDENCIES
   overcommit
   pry
   rainbow
+  reline!
   rspec
   rubocop
   rubocop-md
