@@ -1,0 +1,12 @@
+{
+    "name": "grammy",
+    "private": true,
+    "dependencies": {
+        "markdownlint-cli2": "^0.17.2"
+    },
+    "devDependencies": {
+        "@types/bun": "latest"
+    },
+    "peerDependencies": {
+    }
+}
