@@ -70,7 +70,7 @@ Here's a list of things I'd like to complete to make Grammy **great**.
         - [ ] Ruby
         - [ ] gems
         - [ ] RuboCop (see if any rules need updated config)
-- [ ] CI/CD setup (GitHub Actions)
+- [x] CI/CD setup (GitHub Actions)
 - [x] linting
     - [x] RuboCop
     - [x] markdownlint
