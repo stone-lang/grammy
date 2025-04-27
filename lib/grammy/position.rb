@@ -2,6 +2,11 @@ module Grammy
   # row/column are 1-based.
   # index is 0-based, with respect to the full input string.
   class Position < Data.define(:row, :column, :index)
+
+    def self.new(row = 1, column = 1, index = 0)
+      super
+    end
+
     def advance(text)
       newline_count = text.count("\n")
       new_index = index + text.length
