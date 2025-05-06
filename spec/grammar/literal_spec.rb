@@ -8,7 +8,7 @@ end
 RSpec.describe LiteralGrammar do
   subject(:parse_tree) { grammar.parse(input) }
   let(:grammar) { described_class }
-  let(:tokens) { parse_tree.tokens }
+  let(:tokens) { parse_tree.tokens.map(&:to_s) }
 
   context "with a literal `+`" do
     let(:input) { "+" }

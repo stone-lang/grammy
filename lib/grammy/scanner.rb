@@ -1,5 +1,5 @@
 require "grammy/position"
-require "grammy/match"
+require "grammy/token"
 
 
 module Grammy
@@ -16,7 +16,7 @@ module Grammy
 
     # Try to match given String or Regexp at current position.
     # Returns `nil` if pattern does not match.
-    # Otherwise, updates @position and returns a Match object.
+    # Otherwise, updates @position and returns a Token object.
     def match(pattern)
       return nil if @position.index >= @input.size
 
@@ -73,7 +73,7 @@ module Grammy
       start_pos = @position
       end_pos = start_pos.advance(text[0...-1])
       @position = end_pos.advance(text[-1])
-      Match.new(text, start_pos, end_pos)
+      Token.new(text, start_pos, end_pos)
     end
 
   end

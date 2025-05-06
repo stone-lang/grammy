@@ -1,5 +1,6 @@
 require "grammy/parse_tree"
-require "grammy/match"
+require "grammy/token"
+
 
 RSpec.describe Grammy::ParseTree do
   let(:empty_tree) { described_class.new("Empty") }
@@ -19,8 +20,8 @@ RSpec.describe Grammy::ParseTree do
     }
   }
 
-  let(:leaf_first) { Grammy::Match.new("First Leaf") }
-  let(:leaf_second) { Grammy::Match.new("world") }
+  let(:leaf_first) { Grammy::Token.new("First Leaf") }
+  let(:leaf_second) { Grammy::Token.new("world") }
 
   describe ".new" do
     it "creates a tree with a name and children" do
@@ -78,13 +79,13 @@ RSpec.describe Grammy::ParseTree do
   describe "#tokens" do
     it "returns matched strings from all leaves" do
       tree = described_class.new("root", [leaf_first, leaf_second])
-      expect(tree.tokens).to eq(["First Leaf", "world"])
+      expect(tree.tokens.map(&:to_s)).to eq(["First Leaf", "world"])
     end
 
     it "returns tokens from nested trees" do
       nested = described_class.new("child", [leaf_second])
       tree = described_class.new("root", [leaf_first, nested])
-      expect(tree.tokens).to eq(["First Leaf", "world"])
+      expect(tree.tokens.map(&:to_s)).to eq(["First Leaf", "world"])
     end
   end
 

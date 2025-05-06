@@ -13,7 +13,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:expected_tokens) { ["x = ", "1234"] }
 
       it "parses and returns the parse tree" do
-        expect(tokens).to eq(expected_tokens)
+        expect(tokens.map(&:to_s)).to eq(expected_tokens)
       end
     end
 
@@ -34,7 +34,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:expected_tokens) { ["x"] }
 
       it "parses and returns the parse tree" do
-        expect(tokens).to eq(expected_tokens)
+        expect(tokens.map(&:to_s)).to eq(expected_tokens)
       end
     end
 
@@ -55,7 +55,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:expected_tokens) { ["x = ", "1234"] }
 
       it "parses and returns the parse tree" do
-        expect(tokens).to eq(expected_tokens)
+        expect(tokens.map(&:to_s)).to eq(expected_tokens)
       end
     end
 
@@ -64,7 +64,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:expected_tokens) { ["y"] }
 
       it "parses and returns the parse tree" do
-        expect(tokens).to eq(expected_tokens)
+        expect(tokens.map(&:to_s)).to eq(expected_tokens)
       end
     end
   end
@@ -77,7 +77,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:expected_tokens) { ["x", "y"] }
 
       it "parses and returns the parse tree" do
-        expect(tokens).to eq(expected_tokens)
+        expect(tokens.map(&:to_s)).to eq(expected_tokens)
       end
     end
 
@@ -86,7 +86,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:expected_tokens) { ["x", "z"] }
 
       it "parses and returns the parse tree" do
-        expect(tokens).to eq(expected_tokens)
+        expect(tokens.map(&:to_s)).to eq(expected_tokens)
       end
     end
   end
@@ -99,7 +99,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:expected_tokens) { ["a", "a", "a", "a", "a"] }
 
       it "parses and returns all matches" do
-        expect(tokens).to eq(expected_tokens)
+        expect(tokens.map(&:to_s)).to eq(expected_tokens)
       end
     end
 
@@ -108,7 +108,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:expected_tokens) { [] }
 
       it "parses successfully with no tokens" do
-        expect(tokens).to eq(expected_tokens)
+        expect(tokens.map(&:to_s)).to eq(expected_tokens)
       end
     end
   end
@@ -121,7 +121,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:expected_tokens) { ["a", "a", "a"] }
 
       it "parses and returns all matches" do
-        expect(tokens).to eq(expected_tokens)
+        expect(tokens.map(&:to_s)).to eq(expected_tokens)
       end
     end
 
@@ -137,7 +137,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:input) { "aaaa" }
 
       it "parses only the required number" do
-        expect(tokens).to eq(["a", "a", "a"])
+        expect(tokens.map(&:to_s)).to eq(["a", "a", "a"])
         # NOTE: The scanner will have 1 more character left.
       end
     end
@@ -151,7 +151,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:expected_tokens) { ["a", "a", "a", "b", "b", "b"] }
 
       it "parses and returns all matches" do
-        expect(tokens).to eq(expected_tokens)
+        expect(tokens.map(&:to_s)).to eq(expected_tokens)
       end
     end
 
@@ -172,7 +172,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:expected_tokens) { ["a", "a", "a"] }
 
       it "parses and returns all matches" do
-        expect(tokens).to eq(expected_tokens)
+        expect(tokens.map(&:to_s)).to eq(expected_tokens)
       end
     end
 
@@ -181,7 +181,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:expected_tokens) { ["b", "b", "b"] }
 
       it "parses and returns all matches" do
-        expect(tokens).to eq(expected_tokens)
+        expect(tokens.map(&:to_s)).to eq(expected_tokens)
       end
     end
 
@@ -191,7 +191,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:expected_tokens) { ["a", "b", "a"] }
 
       it "parses and returns all matches" do
-        expect(tokens).to eq(expected_tokens)
+        expect(tokens.map(&:to_s)).to eq(expected_tokens)
       end
     end
   end
@@ -204,7 +204,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:expected_tokens) { ["a", "b", "a"] }
 
       it "parses and returns all matches" do
-        expect(tokens).to eq(expected_tokens)
+        expect(tokens.map(&:to_s)).to eq(expected_tokens)
       end
     end
 
@@ -213,7 +213,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:expected_tokens) { ["b", "a", "b"] }
 
       it "parses and returns all matches" do
-        expect(tokens).to eq(expected_tokens)
+        expect(tokens.map(&:to_s)).to eq(expected_tokens)
       end
     end
   end
@@ -226,7 +226,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:expected_tokens) { ["a", "b"] }
 
       it "parses and returns all matches 230" do
-        expect(tokens).to eq(expected_tokens)
+        expect(tokens.map(&:to_s)).to eq(expected_tokens)
       end
     end
 
@@ -235,7 +235,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:expected_tokens) { ["a"] }
 
       it "parses and returns just the required match" do
-        expect(tokens).to eq(expected_tokens)
+        expect(tokens.map(&:to_s)).to eq(expected_tokens)
         # NOTE: The scanner will have 1 more character left.
       end
     end
