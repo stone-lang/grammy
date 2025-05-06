@@ -13,11 +13,13 @@ module Grammy
     def tokens = leaves.map(&:matched_string).flatten
 
     def to_s(level = 0) = ([to_s_base(level)] + children.map{ to_s_child(it, level) }).join("\n")
-    def inspect = to_s
+
+    def inspect(level = 0) = ([inspect_base(level)] + children.map{ to_s_child(it, level) }).join("\n")
     def to_h = {name:, children: children.map(&:to_h)}
     def pretty_print(pp) = pp.text inspect # For IRB output.
 
-    private def to_s_base(level) = "#{indent(level)}#<ParseTree #{name.inspect}>"
+    private def to_s_base(level) = "#{indent(level)}#{name}"
+    private def inspect_base(level) = "#{indent(level)}#<ParseTree #{name.inspect}>"
     private def to_s_child(child, level) = child.is_a?(Grammy::ParseTree) ? child.to_s(level + 1) : to_s_leaf(child, level + 1)
     private def to_s_leaf(leaf, level) = "#{indent(level)}#{leaf}"
     private def indent(level) = " " * (level * INDENTATION)

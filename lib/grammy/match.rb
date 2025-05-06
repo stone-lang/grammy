@@ -9,8 +9,8 @@ module Grammy
       super
     end
 
-    def to_s = "#<Match #{matched_string.inspect} #{start_position}..#{end_position}>"
-    def inspect = to_s
+    def to_s = matched_string.to_s
+    def inspect = "#<Match #{matched_string.inspect} #{start_position}..#{end_position}>"
     def pretty_print(pp) = pp.text inspect # For IRB output.
 
   end
