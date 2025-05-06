@@ -12,7 +12,7 @@ RSpec.describe Grammy::Matcher do
 
   describe "#match" do
     it "returns a Matcher with the matched pattern" do
-      expect(match_result.matched_string).to eq("abc")
+      expect(match_result.text).to eq("abc")
     end
 
     context "when there is no match" do

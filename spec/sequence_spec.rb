@@ -18,8 +18,8 @@ RSpec.describe Grammy::Matcher::Sequence do
   describe "#match" do
     it "returns an array of Token objects with the matched patterns" do
       expect(match_result).to be_an(Array)
-      expect(match_result.first.matched_string).to eq("abc")
-      expect(match_result.last.matched_string).to eq("1234")
+      expect(match_result.first.text).to eq("abc")
+      expect(match_result.last.text).to eq("1234")
     end
 
     context "when any part of the sequence does not match" do

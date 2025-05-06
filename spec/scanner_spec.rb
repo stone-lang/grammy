@@ -12,7 +12,7 @@ RSpec.describe Grammy::Scanner do
     let(:input) { StringIO.new("abc") }
 
     it "also works" do
-      expect(scanner.match("a").matched_string).to eq("a")
+      expect(scanner.match("a").text).to eq("a")
     end
   end
 
@@ -23,14 +23,14 @@ RSpec.describe Grammy::Scanner do
 
     it "matches literal string" do
       match = scanner.match("hello")
-      expect(match.matched_string).to eq("hello")
+      expect(match.text).to eq("hello")
     end
 
     it "does not advance position on failed literal match" do
       failed_match = scanner.match("x")
       expect(failed_match).to be_nil
       match = scanner.match("hello")
-      expect(match.matched_string).to eq("hello")
+      expect(match.text).to eq("hello")
     end
   end
 
@@ -42,7 +42,7 @@ RSpec.describe Grammy::Scanner do
     it "matches regex" do
       scanner.match("hello\n")
       match = scanner.match(/\d+/)
-      expect(match.matched_string).to eq("123")
+      expect(match.text).to eq("123")
     end
   end
 
@@ -73,7 +73,7 @@ RSpec.describe Grammy::Scanner do
       scanner.match("\n123")
       scanner.backtrack(mark)
       match = scanner.match("hello")
-      expect(match.matched_string).to eq("hello")
+      expect(match.text).to eq("hello")
     end
 
     it "can consume mark so backtracking is limited" do
@@ -93,7 +93,7 @@ RSpec.describe Grammy::Scanner do
       scanner.match("b456")
       scanner.backtrack(outer)
       match = scanner.match("hello")
-      expect(match.matched_string).to eq("hello")
+      expect(match.text).to eq("hello")
     end
 
     it "cannot consume a mark twice" do

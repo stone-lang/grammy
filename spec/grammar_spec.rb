@@ -37,7 +37,7 @@ RSpec.describe Grammy::Grammar do
 
     let(:scanner) { Grammy::Scanner.new(input) }
     let(:input) { "abc123" }
-    let(:match_results) { results.map(&:matched_string) }
+    let(:match_results) { results.map(&:text) }
     let(:results) { parse_tree.leaves.flatten }
     let(:parse_tree) { grammar_instance.execute_rule(rule) }
 
@@ -104,20 +104,20 @@ RSpec.describe Grammy::Grammar do
 
       it "allows 0 or 1 matches" do
         parse_tree = grammar_instance.execute_rule(:rep0_1)
-        match_results = parse_tree.leaves.map(&:matched_string)
+        match_results = parse_tree.leaves.map(&:text)
         expect(parse_tree.name).to eq("rep0_1")
         expect(match_results).to eq(["123x"])
       end
 
       it "allows 1 or more matches" do
         parse_tree = grammar_instance.execute_rule(:rep1_)
-        match_results = parse_tree.leaves.map(&:matched_string)
+        match_results = parse_tree.leaves.map(&:text)
         expect(match_results).to eq(["123x", "1234x", "54321x"])
       end
 
       it "allows no matches" do
         parse_tree = grammar_instance.execute_rule(:rep0_)
-        match_results = parse_tree.leaves.map(&:matched_string)
+        match_results = parse_tree.leaves.map(&:text)
         expect(match_results).to be_empty
       end
 

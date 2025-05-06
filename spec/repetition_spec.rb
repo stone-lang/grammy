@@ -19,7 +19,7 @@ RSpec.describe Grammy::Matcher::Repetition do
 
       it "returns an **array of 1** Token object, with the matched pattern" do
         expect(match_result.length).to eq(1)
-        expect(match_result.first.matched_string).to eq("1234x")
+        expect(match_result.first.text).to eq("1234x")
       end
 
       context "when the submatcher does not match" do
@@ -38,7 +38,7 @@ RSpec.describe Grammy::Matcher::Repetition do
       it "returns an array of Token objects with the matched patterns" do
         expect(match_result.length).to be(3)
         # binding.pry
-        expect(match_result.map(&:matched_string)).to eq(["1234x", "5678x", "4321x"])
+        expect(match_result.map(&:text)).to eq(["1234x", "5678x", "4321x"])
       end
 
       context "when the submatcher does not match" do
@@ -56,7 +56,7 @@ RSpec.describe Grammy::Matcher::Repetition do
 
       it "returns an array of Token objects with the matched patterns" do
         expect(match_result.length).to eq(3)
-        expect(match_result.map(&:matched_string)).to eq(["1234x", "5678x", "4321x"])
+        expect(match_result.map(&:text)).to eq(["1234x", "5678x", "4321x"])
       end
 
       context "when the submatcher does not match" do

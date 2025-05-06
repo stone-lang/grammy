@@ -17,7 +17,7 @@ RSpec.describe Grammy::Matcher::Alternative do
 
   describe "#match" do
     it "returns a Token with the matched pattern" do
-      expect(match_result.matched_string).to eq("abc")
+      expect(match_result.text).to eq("abc")
     end
 
     context "when none of the alternatives match" do
