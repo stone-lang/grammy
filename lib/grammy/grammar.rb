@@ -32,7 +32,7 @@ module Grammy
         scanner = Grammy::Scanner.new(input)
         grammar = self.new(scanner)
         result = grammar.execute_rule(start_rule)
-        fail(Grammy::ParseError, "Parsing failed at position #{scanner.position}") if result.nil? || result.empty? && !scanner.input.empty?
+        fail(Grammy::ParseError, "Parsing failed at location #{scanner.location}") if result.nil? || result.empty? && !scanner.input.empty?
         result
       end
     end

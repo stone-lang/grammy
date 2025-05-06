@@ -26,7 +26,7 @@ RSpec.describe Grammy::Scanner do
       expect(match.text).to eq("hello")
     end
 
-    it "does not advance position on failed literal match" do
+    it "does not advance location on failed literal match" do
       failed_match = scanner.match("x")
       expect(failed_match).to be_nil
       match = scanner.match("hello")
@@ -46,28 +46,28 @@ RSpec.describe Grammy::Scanner do
     end
   end
 
-  describe "position tracking" do
-    it "tracks positions correctly, even across linefeeds" do
+  describe "location tracking" do
+    it "tracks locations correctly, even across linefeeds" do
       match1 = scanner.match("hello")
-      expect(match1.start_position).to eq(Grammy::Position.new(1, 1, 0))
-      expect(match1.end_position).to eq(Grammy::Position.new(1, 5, 4))
+      expect(match1.start_location).to eq(Grammy::Location.new(1, 1, 0))
+      expect(match1.end_location).to eq(Grammy::Location.new(1, 5, 4))
 
       newline = scanner.match("\n")
-      expect(newline.start_position).to eq(Grammy::Position.new(1, 6, 5))
-      expect(newline.end_position).to eq(Grammy::Position.new(1, 6, 5))
+      expect(newline.start_location).to eq(Grammy::Location.new(1, 6, 5))
+      expect(newline.end_location).to eq(Grammy::Location.new(1, 6, 5))
 
       match2 = scanner.match(/\d+b\d+/)
-      expect(match2.start_position).to eq(Grammy::Position.new(2, 1, 6))
-      expect(match2.end_position).to eq(Grammy::Position.new(2, 7, 12))
+      expect(match2.start_location).to eq(Grammy::Location.new(2, 1, 6))
+      expect(match2.end_location).to eq(Grammy::Location.new(2, 7, 12))
 
       match3 = scanner.match("\nworld")
-      expect(match3.start_position).to eq(Grammy::Position.new(2, 8, 13))
-      expect(match3.end_position).to eq(Grammy::Position.new(3, 5, 18))
+      expect(match3.start_location).to eq(Grammy::Location.new(2, 8, 13))
+      expect(match3.end_location).to eq(Grammy::Location.new(3, 5, 18))
     end
   end
 
   describe "backtracking" do
-    it "can set scanning position back to mark" do
+    it "can set scanning location back to mark" do
       mark = scanner.mark
       scanner.match("hello")
       scanner.match("\n123")

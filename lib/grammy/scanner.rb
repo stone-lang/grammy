@@ -1,24 +1,26 @@
-require "grammy/position"
+require "grammy/location"
 require "grammy/token"
 
 
+# PEG parsers don't need a lexer, so this is basically half a lexer.
+# It needs to implement backtracking for the PEG parser.
 module Grammy
 
   class Scanner
 
-    attr_reader :position, :input
+    attr_reader :location, :input
 
     def initialize(input)
       @input = input.is_a?(String) ? input : input.read
-      @position = Position.new(1, 1, 0)
-      @marks = [] # stack of Positions
+      @location = Location.new(1, 1, 0)
+      @marks = [] # stack of Locations
     end
 
-    # Try to match given String or Regexp at current position.
+    # Try to match given String or Regexp at current location.
     # Returns `nil` if pattern does not match.
-    # Otherwise, updates @position and returns a Token object.
+    # Otherwise, updates @location and returns a Token object.
     def match(pattern)
-      return nil if @position.index >= @input.size
+      return nil if @location.index >= @input.size
 
       if pattern.is_a?(String)
         match_string(pattern)
@@ -42,13 +44,13 @@ module Grammy
     end
 
     def mark
-      @marks.push(@position)
-      @position
+      @marks.push(@location)
+      @location
     end
 
     def backtrack(mark)
       fail ArgumentError, "can only backtrack the top mark" unless @marks.last == mark
-      @position = mark
+      @location = mark
       @marks.pop
     end
 
@@ -59,20 +61,20 @@ module Grammy
     end
 
     def finished?
-      @position.index == @input.size
+      @location.index == @input.size
     end
 
     private def remaining_input
-      @input[@position.index..]
+      @input[@location.index..]
     end
 
     # Returns matched text and its location (or nil).
-    # Moves the current position forward to the character *after* the match.
+    # Moves the current location forward to the character *after* the match.
     private def match_text(text)
       return nil unless text && !text.empty?
-      start_pos = @position
+      start_pos = @location
       end_pos = start_pos.advance(text[0...-1])
-      @position = end_pos.advance(text[-1])
+      @location = end_pos.advance(text[-1])
       Token.new(text, start_pos, end_pos)
     end
 

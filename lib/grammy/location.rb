@@ -1,7 +1,7 @@
 module Grammy
   # row/column are 1-based.
   # index is 0-based, with respect to the full input string.
-  class Position < Data.define(:row, :column, :index)
+  class Location < Data.define(:row, :column, :index)
 
     def self.new(row = 1, column = 1, index = 0)
       super
@@ -16,7 +16,7 @@ module Grammy
       else
         new_column = text.length - text.rindex("\n")
       end
-      Position.new(new_row, new_column, new_index)
+      Location.new(new_row, new_column, new_index)
     end
 
     def to_s = "(#{row},#{column})"
