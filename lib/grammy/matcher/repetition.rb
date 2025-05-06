@@ -10,14 +10,12 @@ module Grammy
       end
 
       def match(scanner)
-        all_matches = (1..max_matches).lazy.map { @submatcher.match(scanner) }
+        all_matches = (1..@count_range.end).lazy.map { @submatcher.match(scanner) }
         successful_matches = all_matches.take_while { |match| !match.nil? }.to_a
         successful_matches.tap do |results|
-          return nil if results.size < @count_range.begin
+          return nil unless @count_range.include?(results.size)
         end
       end
-
-      private def max_matches = @count_range.size - 1
 
     end
   end
