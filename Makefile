@@ -1,9 +1,8 @@
 SHELL := /bin/bash
-BUNDLE_CHECK := $(shell bundle check >/dev/null ; echo $$?)
 
 all: setup test lint
 
-setup: bun node_modules/.bin/markdownlint-cli2
+setup: bun bundle node_modules/.bin/markdownlint-cli2
 
 test: specs
 
@@ -17,13 +16,26 @@ lint: markdownlint rubocop
 rspec: bundle
 	DEBUG=0 bundle exec rspec
 
-bundle:
-ifneq ($(BUNDLE_CHECK), 0)
-	@bundle
-endif
+bundle: .tool-versions
+	@# Remove vendor/bundle if Ruby version changed
+	@current_ruby_version=$$(ruby -e 'print RUBY_VERSION'); \
+	desired_ruby_version=$$(grep '^ruby ' .tool-versions | awk '{print $$2}'); \
+	if [ -d vendor/bundle ] && [ "$$current_ruby_version" != "$$desired_ruby_version" ]; then \
+		echo "Ruby version changed ($$current_ruby_version -> $$desired_ruby_version), removing vendor/bundle..."; \
+		rm -rf vendor/bundle; \
+	fi
+	@if [ .tool-versions -nt Gemfile.lock ] ; then \
+		echo running mise ; \
+		mise install ruby ; \
+		echo running bundle ; \
+		bundle install ; \
+	elif ! bundle check >/dev/null ; then \
+		echo running bundle ; \
+		bundle install ; \
+	fi
 
 Gemfile.lock: Gemfile
-	@bundle
+	@bundle install
 
 rubocop:
 	bundle exec rubocop .
@@ -34,7 +46,12 @@ markdownlint: node_modules/.bin/markdownlint-cli2
 node_modules/.bin/markdownlint-cli2:
 	@bun install markdownlint-cli2
 
-bun:
-	@which bun >/dev/null || mise install bun || curl -fsSL https://bun.sh/install | bash
+bun: .tool-versions
+	@if [ .tool-versions -nt bun.lock ] ; then \
+		echo running mise ; \
+		mise install bun ; \
+		echo running bundle ; \
+		bundle install ; \
+	fi
 
 .PHONY: all setup test specs console lint rspec bundle rubocop markdownlint bun
