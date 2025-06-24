@@ -1,16 +1,26 @@
-require "grammy/location"
+require "grammy/match"
 
+
+# A Token is a Match, plus the name of the token rule it matched.
+# It can also have a value, providing a more useful representation of the matched text.
 
 module Grammy
-  # start/end are a "closed interval": locations of first and last character of match.
-  class Token < Data.define(:text, :start_location, :end_location)
+  class Token < Data.define(:name, :match, :value)
 
-    def self.new(text, start_location = Grammy::Location.new, end_location = Grammy::Location.new)
+    def self.new(name, match = nil, value = nil)
+      match = Grammy::Match.new(match) unless match.is_a?(Grammy::Match)
       super
     end
 
-    def to_s = text.to_s
-    def inspect = "#<Token #{text.inspect} #{start_location}..#{end_location}>"
+    def with(value:) = self.class.new(name, match, value)
+
+    def text = match.text
+    def start_location = match.start_location
+    def end_location = match.end_location
+
+    def to_s = text
+    def inspect = "#<Token #{name}: \"#{text}\"#{inspect_value}>"
+    def inspect_value = value ? " (#{value})" : ""
     def pretty_print(pp) = pp.text inspect # For IRB output.
 
   end

@@ -8,7 +8,7 @@ end
 RSpec.describe SeqGrammar do
   subject(:parse_tree) { grammar.parse(input) }
   let(:grammar) { described_class }
-  let(:tokens) { parse_tree.tokens.map(&:to_s) }
+  let(:tokens) { parse_tree.tokens.map(&:text) }
 
   context "with a valid sequence" do
     let(:input) { "hello world" }

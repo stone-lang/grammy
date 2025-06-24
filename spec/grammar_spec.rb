@@ -53,7 +53,7 @@ RSpec.describe Grammy::Grammar do
 
       it "returns a Token matching the string" do
         expect(parse_tree.name).to eq("match1")
-        expect(results.map(&:class)).to eq([Grammy::Token])
+        expect(results.map(&:class)).to eq([Grammy::Match])
         expect(match_results).to eq(["abc"])
       end
     end

@@ -1,4 +1,4 @@
-require "grammy/token"
+require "grammy/match"
 
 
 module Grammy
@@ -6,7 +6,7 @@ module Grammy
 
     def initialize(pattern) = @pattern = pattern
 
-    # Returns a Token, if the pattern matches, else `nil`.
+    # Returns a Match, if the pattern matches, else `nil`.
     def match(scanner) = scanner.match(@pattern)
 
     # DSL for sequence, alternative, and repetition.

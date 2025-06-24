@@ -23,7 +23,7 @@ end
 
 RSpec.describe Grammy::Matcher::Repetition do
   subject(:parse_tree) { grammar.parse(input) }
-  let(:tokens) { parse_tree.tokens.map(&:to_s) }
+  let(:tokens) { parse_tree.tokens.map(&:text) }
 
   describe ZeroOrMoreGrammar do
     let(:grammar) { described_class }

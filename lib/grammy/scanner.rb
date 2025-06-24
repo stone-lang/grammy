@@ -1,5 +1,5 @@
 require "grammy/location"
-require "grammy/token"
+require "grammy/match"
 
 
 # PEG parsers don't need a lexer, so this is basically half a lexer.
@@ -18,7 +18,7 @@ module Grammy
 
     # Try to match given String or Regexp at current location.
     # Returns `nil` if pattern does not match.
-    # Otherwise, updates @location and returns a Token object.
+    # Otherwise, updates @location and returns a Match object.
     def match(pattern)
       return nil if @location.index >= @input.size
 
@@ -75,7 +75,7 @@ module Grammy
       start_pos = @location
       end_pos = start_pos.advance(text[0...-1])
       @location = end_pos.advance(text[-1])
-      Token.new(text, start_pos, end_pos)
+      Match.new(text, start_pos, end_pos)
     end
 
   end

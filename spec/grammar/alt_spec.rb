@@ -8,7 +8,7 @@ end
 RSpec.describe AltGrammar do
   subject(:parse_tree) { grammar.parse(input) }
   let(:grammar) { described_class }
-  let(:tokens) { parse_tree.tokens.map(&:to_s) }
+  let(:tokens) { parse_tree.tokens.map(&:text) }
 
   context "with the first alternative" do
     let(:input) { "hello" }

@@ -1,5 +1,6 @@
 require "grammy/parse_tree"
 require "grammy/token"
+require "grammy/match"
 
 
 RSpec.describe Grammy::ParseTree do
