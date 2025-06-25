@@ -1,8 +1,8 @@
-require "grammy/matcher"
+require "grammy/matcher/regexp"
 require "grammy/scanner"
 
 
-RSpec.describe Grammy::Matcher do
+RSpec.describe Grammy::Matcher::Regexp do
 
   subject(:matcher) { described_class.new(pattern) }
   let(:pattern) { /abc/ }
@@ -11,7 +11,7 @@ RSpec.describe Grammy::Matcher do
   let(:match_result) { matcher.match(scanner) }
 
   describe "#match" do
-    it "returns a Matcher with the matched pattern" do
+    it "returns a Match with the matched pattern" do
       expect(match_result.text).to eq("abc")
     end
 

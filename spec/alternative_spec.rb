@@ -7,8 +7,8 @@ RSpec.describe Grammy::Matcher::Alternative do
   subject(:matcher) { described_class.new(*alternatives) }
   let(:alternatives) {
     [
-      Grammy::Matcher.new(/\d+/),
-      Grammy::Matcher.new(/abc/)
+      Grammy::Matcher::Regexp.new(/\d+/),
+      Grammy::Matcher::Regexp.new(/abc/)
     ]
   }
   let(:scanner) { Grammy::Scanner.new(input) }

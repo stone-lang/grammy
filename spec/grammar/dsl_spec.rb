@@ -247,51 +247,51 @@ end
 module DslGrammars
   class Sequence < Grammy::Grammar
     root :seq
-    rule(:seq) { match("x = ") + match(/\d+/) }
+    rule(:seq) { str("x = ") + reg(/\d+/) }
   end
 
   class Choice < Grammy::Grammar
     root :cho
-    rule(:cho) { match("x") | match("y") }
+    rule(:cho) { str("x") | str("y") }
   end
 
   class SequenceAndChoice < Grammy::Grammar
     root :sc
-    rule(:sc) { match("x = ") + match(/\d+/) | match("y") }
+    rule(:sc) { str("x = ") + reg(/\d+/) | str("y") }
   end
 
   class ChoiceAndSequence < Grammy::Grammar
     root :cs
-    rule(:cs) { match("x") + (match("y") | match("z")) }
+    rule(:cs) { str("x") + (str("y") | str("z")) }
   end
 
   class Repetition < Grammy::Grammar
     root :rep
-    rule(:rep) { match("a")[0..] }
+    rule(:rep) { str("a")[0..] }
   end
 
   class ExactRangeRepetition < Grammy::Grammar
     root :rep
-    rule(:rep) { match("a")[3..3] }
+    rule(:rep) { str("a")[3..3] }
   end
 
   class RepetitionSequence < Grammy::Grammar
     root :rep_seq
-    rule(:rep_seq) { match("a")[3..3] + match("b")[3..3] }
+    rule(:rep_seq) { str("a")[3..3] + str("b")[3..3] }
   end
 
   class RepetitionAlternation < Grammy::Grammar
     root :rep_alt
-    rule(:rep_alt) { (match("a") | match("b"))[3..3] }
+    rule(:rep_alt) { (str("a") | str("b"))[3..3] }
   end
 
   class RepetitionGroupedAlternation < Grammy::Grammar
     root :rep_group_alt
-    rule(:rep_group_alt) { (match("a") | match("b"))[1..1] + (match("a") | match("b"))[1..1] + (match("a") | match("b"))[1..1] }
+    rule(:rep_group_alt) { (str("a") | str("b"))[1..1] + (str("a") | str("b"))[1..1] + (str("a") | str("b"))[1..1] }
   end
 
   class Optional < Grammy::Grammar
     root :opt
-    rule(:opt) { match("a") + match("b")[0..1] }
+    rule(:opt) { str("a") + str("b")[0..1] }
   end
 end

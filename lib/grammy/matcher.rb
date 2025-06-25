@@ -6,8 +6,7 @@ module Grammy
 
     def initialize(pattern) = @pattern = pattern
 
-    # Returns a Match, if the pattern matches, else `nil`.
-    def match(scanner) = scanner.match(@pattern)
+    def match(scanner) = fail NotImplementedError, "abstract method -- must override in derived classes"
 
     # DSL for sequence, alternative, and repetition.
     def +(other) = Matcher::Sequence.new(self, other)

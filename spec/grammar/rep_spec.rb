@@ -2,22 +2,22 @@ require "grammy/grammar"
 
 class ZeroOrMoreGrammar < Grammy::Grammar
   root(:digits)
-  rule(:digits) { rep(match(/[0-9]/), 0..) }
+  rule(:digits) { rep(reg(/[0-9]/), 0..) }
 end
 
 class OneOrMoreGrammar < Grammy::Grammar
   root(:digits)
-  rule(:digits) { rep(match(/[0-9]/), 1..) }
+  rule(:digits) { rep(reg(/[0-9]/), 1..) }
 end
 
 class OptionalGrammar < Grammy::Grammar
   root(:digits_then_a)
-  rule(:digits_then_a) { seq(rep(match(/[0-9]/), 0..1), match("a")) }
+  rule(:digits_then_a) { seq(rep(reg(/[0-9]/), 0..1), str("a")) }
 end
 
 class Exactly3Grammar < Grammy::Grammar
   root(:digits)
-  rule(:digits) { rep(match(/[0-9]/), 3..3) }
+  rule(:digits) { rep(reg(/[0-9]/), 3..3) }
 end
 
 
@@ -127,7 +127,7 @@ RSpec.describe Grammy::Matcher::Repetition do
         expect(tokens).to eq(["7", "a"])
       end
 
-      it "includes the match in the parse tree" do
+      it "includes the reg in the parse tree" do
         expect(parse_tree).to be_a(Grammy::ParseTree)
         expect(parse_tree.name).to eq("digits_then_a")
       end

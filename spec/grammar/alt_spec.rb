@@ -2,7 +2,7 @@ require "grammy/grammar"
 
 class AltGrammar < Grammy::Grammar
   root(:greeting)
-  rule(:greeting) { alt(match("hello"), match("hi"), match("hey")) }
+  rule(:greeting) { alt(str("hello"), str("hi"), str("hey")) }
 end
 
 RSpec.describe AltGrammar do

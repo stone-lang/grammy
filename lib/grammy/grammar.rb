@@ -1,5 +1,4 @@
 require "grammy/combinator/primitives"
-require "grammy/matcher"
 require "grammy/errors"
 require "grammy/scanner"
 require "grammy/parse_tree"

@@ -16,27 +16,20 @@ module Grammy
       @marks = [] # stack of Locations
     end
 
-    # Try to match given String or Regexp at current location.
+    # Try to match given String at current location.
     # Returns `nil` if pattern does not match.
     # Otherwise, updates @location and returns a Match object.
-    def match(pattern)
-      return nil if @location.index >= @input.size
-
-      if pattern.is_a?(String)
-        match_string(pattern)
-      elsif pattern.is_a?(Regexp)
-        match_regex(pattern)
-      else
-        fail ArgumentError, "Unsupported pattern type: #{pattern.class}"
-      end
-    end
-
     def match_string(pattern)
+      return nil if @location.index >= @input.size
       return nil unless remaining_input.start_with?(pattern)
       match_text(pattern)
     end
 
-    def match_regex(pattern)
+    # Try to match given Regexp at current location.
+    # Returns `nil` if pattern does not match.
+    # Otherwise, updates @location and returns a Match object.
+    def match_regexp(pattern)
+      return nil if @location.index >= @input.size
       anchored_regex = Regexp.new("\\A(?:#{pattern.source})", pattern.options)
       match = remaining_input.match(anchored_regex)
       return nil unless match

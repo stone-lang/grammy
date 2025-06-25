@@ -67,13 +67,13 @@ class Arithmetic < Grammy::Grammar
   root :expression
 
   # Define the rules.
-  rule(:expression) { term + (match("+") + term)[0..] }
-  rule(:term) { factor + (match("*") + factor)[0..] }
+  rule(:expression) { term + (str("+") + term)[0..] }
+  rule(:term) { factor + (str("*") + factor)[0..] }
   rule(:factor) { number | parens(expression) }
-  rule(:number) { match(/\d+/) }
+  rule(:number) { reg(/\d+/) }
 
   # Define any custom combinators.
-  def parens(exp) = match("(") + expression + match(")")
+  def parens(exp) = str("(") + expression + str(")")
 end
 ~~~
 
@@ -87,13 +87,13 @@ class Arithmetic < Grammy::Grammar
   root :expression
 
   # Define the rules.
-  rule def expression = term + (match("+") + term)[0..]
-  rule def term = factor + (match("*") + factor)[0..]
+  rule def expression = term + (str("+") + term)[0..]
+  rule def term = factor + (str("*") + factor)[0..]
   rule def factor = number | parens(expression)
-  rule def number = match(/\d+/)
+  rule def number = reg(/\d+/)
 
   # Define any custom combinators.
-  def parens(exp) = match("(") + expression + match(")")
+  def parens(exp) = str("(") + expression + str(")")
 end
 ~~~
 
@@ -107,13 +107,13 @@ class Arithmetic < Grammy::Grammar
   start :expression
 
   # Define the rules.
-  def expression = rule { term + (match("+") + term)[0..] }
-  def term = rule { factor + (match("*") + factor)[0..] }
+  def expression = rule { term + (str("+") + term)[0..] }
+  def term = rule { factor + (str("*") + factor)[0..] }
   def factor = rule { number | parens(expression) }
-  def number = rule { match(/\d+/) }
+  def number = rule { reg(/\d+/) }
 
   # Define any custom combinators.
-  def parens(exp) = match("(") + expression + match(")")
+  def parens(exp) = str("(") + expression + str(")")
 end
 ~~~
 
@@ -124,14 +124,22 @@ Combinators are functions that take one or more parsers as arguments and return 
 
 Only a few primitive combinators are needed.
 
-### Match
+### String
 
-The `match` combinator is used to match a string or a regular expression.
+The `str` combinator is used to match a string.
 
 ~~~ ruby
-match("return")
-match(/\d+/)
+str("return")
 ~~~
+
+### Regex
+
+The `reg` combinator is used to match a regular expression.
+
+~~~ ruby
+reg(/\d+/)
+~~~
+
 
 ### Sequence
 
@@ -140,7 +148,7 @@ You use the `seq` combinator to specify a sequence of what to match.
 This example matches a sequence of a term, a plus sign, and another term.
 
 ~~~ ruby
-seq(term, match("+"), term)
+seq(term, str("+"), term)
 ~~~
 
 ### Alternatives
@@ -150,14 +158,15 @@ The `alt` combinator is used to specify alternatives (multiple choices) of what 
 This example matches either a plus sign or a minus sign.
 
 ~~~ ruby
-alt(match("+"), match("-"))
+alt(str("+"), str("-"))
 ~~~
 
-NOTE: This would most likely done with a single `match` call:
-
-~~~ ruby
-match(/[+-]/)
-~~~
+> [!NOTE]
+> In practical use, this would most likely be done with a single `reg` call:
+>
+> ~~~ ruby
+> reg(/[+-]/)
+> ~~~
 
 ### Repetition
 
@@ -167,7 +176,7 @@ You can specify the minimum and maximum number of repetitions, using a range.
 This example matches one or more digits.
 
 ~~~ ruby
-rep(match(/\d+/), 1..)
+rep(reg(/\d+/), 1..)
 ~~~
 
 ### Operator DSL
@@ -180,8 +189,8 @@ The `[]` operator can be used in place of the `rep` combinator.
 For example, the following two lines are equivalent:
 
 ~~~ ruby
-seq(term, match("+"), term)
-term + match("+") + term
+seq(term, str("+"), term)
+term + str("+") + term
 ~~~
 
 ## Parse Tree

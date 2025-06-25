@@ -13,10 +13,9 @@ Here's a list of things I'd like to complete to make Grammy **great**.
 
 ## Grammar
 
+- [x] primitive combinators: `str` and `reg`
 - [x] primitive combinators: `seq`, `alt`, `rep`
 - [x] add `_` to canonical names
-- [ ] separate `match` and `regex`?
-- [ ] maybe rename `match` to `str` and `rex`?
 - [ ] try out the decorated methods syntax
 - [ ] try out the instance methods syntax
 

@@ -2,7 +2,7 @@ require "grammy/grammar"
 
 class LiteralGrammar < Grammy::Grammar
   root(:plus)
-  rule(:plus) { match("+") }
+  rule(:plus) { str("+") }
 end
 
 RSpec.describe LiteralGrammar do

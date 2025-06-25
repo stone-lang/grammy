@@ -41,11 +41,11 @@ RSpec.describe Grammy::Grammar do
     let(:results) { parse_tree.leaves.flatten }
     let(:parse_tree) { grammar_instance.execute_rule(rule) }
 
-    context "with a `match` combinator" do
+    context "with a `str` combinator" do
 
       before do
         grammar.class_eval do
-          rule(:match1) { match("abc") }
+          rule(:match1) { str("abc") }
         end
       end
 
@@ -62,7 +62,7 @@ RSpec.describe Grammy::Grammar do
 
       before do
         grammar.class_eval do
-          rule(:seq1) { seq(match("abc"), match("123")) }
+          rule(:seq1) { seq(str("abc"), str("123")) }
         end
       end
 
@@ -78,7 +78,7 @@ RSpec.describe Grammy::Grammar do
 
       before do
         grammar.class_eval do
-          rule(:alt1) { alt(match(/\d+/), match("abc")) }
+          rule(:alt1) { alt(reg(/\d+/), str("abc")) }
         end
       end
 
@@ -94,9 +94,9 @@ RSpec.describe Grammy::Grammar do
 
       before do
         grammar.class_eval do
-          rule(:rep0_1) { rep(match(/\d+x/), 0..1) }
-          rule(:rep1_) { rep(match(/\d+x/), 1..) }
-          rule(:rep0_) { rep(match("abc"), 0..) }
+          rule(:rep0_1) { rep(reg(/\d+x/), 0..1) }
+          rule(:rep1_) { rep(reg(/\d+x/), 1..) }
+          rule(:rep0_) { rep(str("abc"), 0..) }
         end
       end
 
@@ -124,5 +124,6 @@ RSpec.describe Grammy::Grammar do
     end
 
   end
+
 end
 # rubocop:enable Naming/VariableNumber,RSpec/MultipleMemoizedHelpers

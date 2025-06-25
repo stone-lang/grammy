@@ -6,7 +6,7 @@ require "grammy/scanner"
 RSpec.describe Grammy::Matcher::Repetition do
 
   subject(:matcher) { described_class.new(submatcher, count_range) }
-  let(:submatcher) { Grammy::Matcher.new(/\d+x/) }
+  let(:submatcher) { Grammy::Matcher::Regexp.new(/\d+x/) }
   let(:scanner) { Grammy::Scanner.new(input) }
   let(:input) { "1234x5678x4321x" }
   let(:match_result) { matcher.match(scanner) }

@@ -2,7 +2,7 @@ require "grammy/grammar"
 
 class SeqGrammar < Grammy::Grammar
   root(:greeting)
-  rule(:greeting) { seq(match("hello"), match(" "), match("world")) }
+  rule(:greeting) { seq(str("hello"), str(" "), str("world")) }
 end
 
 RSpec.describe SeqGrammar do
