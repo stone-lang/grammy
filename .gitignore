@@ -60,3 +60,8 @@ build-iPhoneSimulator/
 
 # Dependency directories
 node_modules/
+
+## Encryption
+
+# dotenvx
+.env.keys

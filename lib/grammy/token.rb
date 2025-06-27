@@ -12,6 +12,7 @@ module Grammy
       super
     end
 
+    # TODO: Extract this into a Data helper. Better yet, create a Value class for value objects.
     def with(value:) = self.class.new(name, match, value)
 
     def text = match.text

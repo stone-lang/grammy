@@ -48,11 +48,10 @@ Here's a list of things I'd like to complete to make Grammy **great**.
     - [ ] badges (see [shields.io](https://shields.io/))
         - [ ] version
         - [x] license
-        - [ ] build status (https://github.com/OWNER/REPO/actions/workflows/WORKFLOW/badge.svg
-        )
+        - [ ] build status (https://github.com/OWNER/REPO/actions/workflows/WORKFLOW/badge.svg)
         - [ ] test coverage
         - [ ] dependencies status
-- [x] `TODO`
+- [x] `TODO` (and keep it updated)
 - [ ] `CHANGELOG` (and keep it updated)
 - [x] `LICENSE` file (and keep it updated)
 - [ ] code of conduct
@@ -88,17 +87,21 @@ Here's a list of things I'd like to complete to make Grammy **great**.
     - [x] grammar
     - [ ] parser
     - [x] parse tree
+    - [ ] AST builder
 - [ ] integration tests
     - [x] parser
     - [ ] parse tree
-    - [ ] AST
+    - [ ] grammar
+    - [ ] AST builder
+    - [ ] user-defined combinators
+    - [ ] rule actions
 - [ ] performance tests
     - [ ] benchmarks
 - [ ] property (fuzzing) tests
 
 ## Gem
 
-- [ ] create a gem
+- [ ] publish a gem
     - [ ] `gemspec`
     - [ ] upload to RubyGems
 - [ ] CLI
