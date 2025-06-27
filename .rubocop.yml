@@ -31,11 +31,17 @@ Style/BlockDelimiters:
   FunctionalMethods:
     - expect
   AllowedMethods:
-    - rule
-    - rule!
+    # RSpec
     - let
     - let!
     - subject
+    # Grammy grammar rules
+    - rule
+    - rule!
+    - token
+    - terminal
+    # Grammy tree transforms
+    - transform
 
 Layout/EmptyLinesAroundClassBody:
   Enabled: false
@@ -96,3 +102,11 @@ Style/CommentedKeyword:
 #   Max: 10
 #   CountAsOne:
 #     - new
+
+# This rule requires arrays in arguments to be formatted like this 😢:
+# my_method(1, [
+#           1,
+#           2
+# ])
+Layout/FirstArrayElementIndentation:
+  Enabled: false

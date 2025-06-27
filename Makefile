@@ -38,7 +38,7 @@ Gemfile.lock: Gemfile
 	@bundle install
 
 rubocop:
-	bundle exec rubocop .
+	bundle exec rubocop lib spec
 
 markdownlint: node_modules/.bin/markdownlint-cli2
 	@bunx markdownlint-cli2 '**/*.md' '!vendor' '!node_modules'
