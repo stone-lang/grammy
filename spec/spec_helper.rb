@@ -96,3 +96,10 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 end
+
+
+# Assume every spec will need to know about the Grammar class.
+require "grammy/grammar"
+
+# Load shared examples.
+Dir[File.join(__dir__, "shared_examples", "**", "*.rb")].each { require it }

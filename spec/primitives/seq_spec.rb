@@ -1,13 +1,12 @@
-require "grammy/grammar"
+RSpec.describe Grammy::Grammar, "#seq" do
+  subject(:grammar) {
+    Class.new(described_class) do
+      root(:greeting)
+      rule(:greeting) { seq(str("hello"), str(" "), str("world")) }
+    end
+  }
 
-class SeqGrammar < Grammy::Grammar
-  root(:greeting)
-  rule(:greeting) { seq(str("hello"), str(" "), str("world")) }
-end
-
-RSpec.describe SeqGrammar do
-  subject(:parse_tree) { grammar.parse(input) }
-  let(:grammar) { described_class }
+  let(:parse_tree) { grammar.parse(input) }
   let(:tokens) { parse_tree.tokens.map(&:text) }
 
   context "with a valid sequence" do

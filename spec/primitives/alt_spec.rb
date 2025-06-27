@@ -1,13 +1,12 @@
-require "grammy/grammar"
+RSpec.describe Grammy::Grammar, "#alt" do
+  subject(:grammar) {
+    Class.new(described_class) do
+      root(:greeting)
+      rule(:greeting) { alt(str("hello"), str("hi"), str("hey")) }
+    end
+  }
 
-class AltGrammar < Grammy::Grammar
-  root(:greeting)
-  rule(:greeting) { alt(str("hello"), str("hi"), str("hey")) }
-end
-
-RSpec.describe AltGrammar do
-  subject(:parse_tree) { grammar.parse(input) }
-  let(:grammar) { described_class }
+  let(:parse_tree) { grammar.parse(input) }
   let(:tokens) { parse_tree.tokens.map(&:text) }
 
   context "with the first alternative" do
