@@ -1,7 +1,7 @@
 RSpec.describe Grammy::Grammar, "#alt" do
   subject(:grammar) {
     Class.new(described_class) do
-      root(:greeting)
+      start(:greeting)
       rule(:greeting) { alt(str("hello"), str("hi"), str("hey")) }
     end
   }

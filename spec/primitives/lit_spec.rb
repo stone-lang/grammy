@@ -1,7 +1,7 @@
 RSpec.describe Grammy::Grammar, "#lit" do
   subject(:grammar) {
     Class.new(described_class) do
-      root(:greeting)
+      start(:greeting)
       rule(:greeting) { lit("hello") }
     end
   }

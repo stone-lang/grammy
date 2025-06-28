@@ -1,7 +1,7 @@
 RSpec.describe Grammy::Grammar, "#wsp" do
   subject(:grammar) {
     Class.new(described_class) do
-      root(:two_lines)
+      start(:two_lines)
       rule(:two_lines) { str("abc") + wsp + str("def") }
     end
   }

@@ -5,7 +5,7 @@ RSpec.describe Grammy::Grammar, "#rep" do
   context "with 0.. (zero or more)" do
     subject(:grammar) {
       Class.new(described_class) do
-        root(:digits)
+        start(:digits)
         rule(:digits) { rep(reg(/[0-9]/), 0..) }
       end
     }
@@ -50,7 +50,7 @@ RSpec.describe Grammy::Grammar, "#rep" do
   context "with 1.. (one or more)" do
     subject(:grammar) {
       Class.new(described_class) do
-        root(:digits)
+        start(:digits)
         rule(:digits) { rep(reg(/[0-9]/), 1..) }
       end
     }
@@ -107,7 +107,7 @@ RSpec.describe Grammy::Grammar, "#rep" do
   context "with 0..1 (zero or one)" do
     subject(:grammar) {
       Class.new(described_class) do
-        root(:digits_then_a)
+        start(:digits_then_a)
         rule(:digits_then_a) { seq(rep(reg(/[0-9]/), 0..1), str("a")) }
       end
     }
@@ -150,7 +150,7 @@ RSpec.describe Grammy::Grammar, "#rep" do
   context "with 3..3 (exactly 3)" do
     subject(:grammar) {
       Class.new(described_class) do
-        root(:digits)
+        start(:digits)
         rule(:digits) { rep(reg(/[0-9]/), 3..3) }
       end
     }

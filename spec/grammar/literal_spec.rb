@@ -1,7 +1,7 @@
 require "grammy/grammar"
 
 class LiteralGrammar < Grammy::Grammar
-  root(:plus)
+  start(:plus)
   rule(:plus) { str("+") }
 end
 

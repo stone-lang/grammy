@@ -8,16 +8,16 @@ RSpec.describe Grammy::Grammar do
 
   subject(:grammar) do
     Class.new(described_class) do
-      root :greet
+      start :greet
       rule(:greet) { "hello" }
     end
   end
   let(:scanner) { instance_double(Grammy::Scanner, match: nil) }
   let(:grammar_instance) { grammar.new(scanner) }
 
-  describe ".root" do
-    it "sets the root rule, for access via `.root_rule`" do
-      expect(grammar.root_rule).to eq(:greet)
+  describe ".start" do
+    it "sets the start rule, for access via `.start_rule`" do
+      expect(grammar.start_rule).to eq(:greet)
     end
   end
 
@@ -27,9 +27,9 @@ RSpec.describe Grammy::Grammar do
     end
   end
 
-  describe ".root_rule" do
-    it "returns the name of the root rule" do
-      expect(grammar.root_rule).to eq(:greet)
+  describe ".start_rule" do
+    it "returns the name of the start rule" do
+      expect(grammar.start_rule).to eq(:greet)
     end
   end
 

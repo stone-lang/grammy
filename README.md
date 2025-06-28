@@ -64,7 +64,7 @@ require 'grammy'
 
 class Arithmetic < Grammy::Grammar
   # Specify which rule to start with.
-  root :expression
+  start :expression
 
   # Define the rules.
   rule(:expression) { term + (str("+") + term)[0..] }
@@ -84,7 +84,7 @@ require 'grammy'
 
 class Arithmetic < Grammy::Grammar
   # Specify which rule to start with.
-  root :expression
+  start :expression
 
   # Define the rules.
   rule def expression = term + (str("+") + term)[0..]

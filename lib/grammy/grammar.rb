@@ -11,7 +11,7 @@ module Grammy
 
     class << self
       # DSL for defining grammar rules.
-      def root(rule_name) = @root_rule = rule_name
+      def start(rule_name) = @start_rule = rule_name
       def rule(name, &)
         rules[name] = lambda { |_|
           results = instance_eval(&)
@@ -23,14 +23,14 @@ module Grammy
       end
 
       # Access to the rules.
-      def root_rule = @root_rule || :start
+      def start_rule = @start_rule || @rules.first || :start
       def rules = @rules ||= {}
 
       # Parse an input using the grammar.
-      def parse(input, start_rule = root_rule)
+      def parse(input, start: start_rule)
         scanner = Grammy::Scanner.new(input)
         grammar = self.new(scanner)
-        result = grammar.execute_rule(start_rule)
+        result = grammar.execute_rule(start)
         fail(Grammy::ParseError, "Parsing failed at location #{scanner.location}") if result.nil? || result.empty? && !scanner.input.empty?
         result
       end

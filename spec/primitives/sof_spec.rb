@@ -1,7 +1,7 @@
 RSpec.describe Grammy::Grammar, "#sof" do
   subject(:grammar) {
     Class.new(described_class) do
-      root(:start)
+      start(:start)
       rule(:start) { sof + str("abc") }
     end
   }

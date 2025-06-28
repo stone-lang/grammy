@@ -1,7 +1,7 @@
 RSpec.describe Grammy::Grammar, "#eol" do
   subject(:grammar) {
     Class.new(described_class) do
-      root(:two_lines)
+      start(:two_lines)
       rule(:two_lines) { str("abc") + eol + str("def") }
     end
   }

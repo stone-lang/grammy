@@ -1,7 +1,7 @@
 RSpec.describe Grammy::Grammar, "#eof" do
   subject(:grammar) {
     Class.new(described_class) do
-      root(:one_line)
+      start(:one_line)
       rule(:one_line) { str("abc") + eof }
     end
   }

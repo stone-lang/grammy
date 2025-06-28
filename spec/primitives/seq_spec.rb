@@ -1,7 +1,7 @@
 RSpec.describe Grammy::Grammar, "#seq" do
   subject(:grammar) {
     Class.new(described_class) do
-      root(:greeting)
+      start(:greeting)
       rule(:greeting) { seq(str("hello"), str(" "), str("world")) }
     end
   }
