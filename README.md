@@ -126,10 +126,11 @@ Only a few primitive combinators are needed.
 
 ### String
 
-The `str` combinator is used to match a string.
+The `str` combinator is used to match a string; it has an alias of `lit` (for "literal").
 
 ~~~ ruby
 str("return")
+lit("return")
 ~~~
 
 ### Regex
@@ -139,7 +140,6 @@ The `reg` combinator is used to match a regular expression.
 ~~~ ruby
 reg(/\d+/)
 ~~~
-
 
 ### Sequence
 
@@ -189,9 +189,18 @@ The `[]` operator can be used in place of the `rep` combinator.
 For example, the following two lines are equivalent:
 
 ~~~ ruby
-seq(term, str("+"), term)
-term + str("+") + term
+seq(alt(term, expr), str("+"), rep(term, 0..1))
+(term | expr) + lit("+") + term[0..1]
 ~~~
+
+### Start/End of Line/File
+
+The `eol` and `sol` combinators match the end of a line and the start of a line.
+The `eof` and `sof` combinators match the end of a file and the start of a file.
+
+## Whitespace
+
+The `wsp` combinator matches any whitespace characters, including tab, newline, carriage return, etc.
 
 ## Parse Tree
 

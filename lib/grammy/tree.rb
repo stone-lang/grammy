@@ -10,7 +10,6 @@ module Grammy
 
     def empty? = children.flatten.compact.empty?
     def leaves = children.flat_map { it.is_a?(self.class) ? it.leaves : it }.compact
-    def tokens = leaves.flatten
 
     def to_s(level = 0) = ([to_s_base(level)] + children.map{ to_s_child(it, level) }).join("\n")
 

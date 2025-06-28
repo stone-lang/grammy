@@ -79,19 +79,6 @@ module Grammy
       end
     end
 
-    describe "#tokens" do
-      it "returns matched strings from all leaves" do
-        tree = described_class.new("root", [leaf_first, leaf_second])
-        expect(tree.tokens.map(&:to_s)).to eq(["First Leaf", "world"])
-      end
-
-      it "returns tokens from nested trees" do
-        nested = described_class.new("child", [leaf_second])
-        tree = described_class.new("root", [leaf_first, nested])
-        expect(tree.tokens.map(&:to_s)).to eq(["First Leaf", "world"])
-      end
-    end
-
     describe "#to_s" do
       it "formats a simple tree" do
         tree = described_class.new("root", [leaf_first])
@@ -137,5 +124,4 @@ module Grammy
     end
   end
 end
-
 # rubocop:enable Metrics/ModuleLength

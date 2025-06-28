@@ -13,11 +13,23 @@ Here's a list of things I'd like to complete to make Grammy **great**.
 
 ## Grammar
 
-- [x] primitive combinators: `str` and `reg`
+- [x] primitive combinators: `str` (AKA `lit`) and `reg`
 - [x] primitive combinators: `seq`, `alt`, `rep`
-- [x] add `_` to canonical names
-- [ ] try out the decorated methods syntax
-- [ ] try out the instance methods syntax
+- [x] primitive combinators: `eol`/`sol`, `eof`/`sof`
+- [x] primitive combinators: `wsp`
+- [x] add `_` to canonical names (where it makes sense)
+- [ ] combinator aliases
+    - [ ] `zero_or_more` / `_any`
+    - [ ] `one_or_more` / `_some`
+    - [ ] `zero_or_one` / `optional` (and maybe `_opt`?)
+- [x] rules
+    - [x] DSL syntax
+        - `rule(:expression) { term + (str("+") + term)[0..] }`
+    - [ ] try instance methods syntax
+        - `def expression = term + (str("+") + term)[0..]`
+    - [ ] try decorated methods syntax
+        - `rule def expression = term + (str("+") + term)[0..]`
+- [ ] token/terminal rules
 
 ## Setup
 
