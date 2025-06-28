@@ -5,10 +5,12 @@ source "https://rubygems.org"
 # Specifications
 gem "rspec"
 
+# Language features
+gem "strict_ivars", require: false
+
 # Console
 gem "irb"
 gem "reline", github: "ruby/reline", branch: "master"
-
 gem "pry"
 gem "amazing_print"
 gem "rainbow" # ANSI colors for the console

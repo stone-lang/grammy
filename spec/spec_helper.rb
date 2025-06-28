@@ -97,6 +97,9 @@ RSpec.configure do |config|
 =end
 end
 
+# Raise an exception if we reference an undefined instance variable.
+require "strict_ivars"
+StrictIvars.init(include: ["#{Dir.pwd}/**/*"], exclude: ["#{Dir.pwd}/vendor/**/*"])
 
 # Assume every spec will need to know about the Grammar class.
 require "grammy/grammar"
