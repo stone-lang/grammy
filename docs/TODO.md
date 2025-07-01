@@ -1,15 +1,16 @@
 # TODO
 
 Here's a list of things I'd like to complete to make Grammy **great**.
-(Most of these are boilerplate, so some might not apply.)
 
 ## Scanner
 
-- [ ] line continuation (`\` followed immediately by newline)
+- [ ] line continuation
+    - [ ] `\` followed immediately by newline (traditional)
+    - [ ] newline followed immediately by `\` (more visible)
     - [ ] skip leading whitespace on following line
-    - [ ] optional?
+    - [ ] optional per grammar
+    - [ ] optional per rule
 - [ ] indentation
-    - [ ] optional
 
 ## Grammar
 
@@ -36,6 +37,19 @@ Here's a list of things I'd like to complete to make Grammy **great**.
     - [x] tree transformation DSL
     - [ ] AST builder
     - [ ] actions in grammar rules
+- [ ] user-defined combinators
+- [ ] error handling
+    - [ ] error messages
+    - [ ] error recovery
+    - [ ] `fail`/`catch` combinators?
+- [ ] packrat caching/memoization
+- [ ] lookahead predicates
+    - [ ] "and" lookahead predicate
+    - [ ] "not" lookahead predicate
+- [ ] "cut operator"
+    - [ ] combinator?
+    - [ ] automatic insertion
+- [ ] automatic left recursion support
 
 ## Setup
 
@@ -86,15 +100,22 @@ Here's a list of things I'd like to complete to make Grammy **great**.
         - [ ] Ruby
         - [ ] gems
         - [ ] RuboCop (see if any rules need updated config)
+        - [ ] bun
 - [x] CI/CD setup (GitHub Actions)
 - [x] linting
     - [x] RuboCop
     - [x] markdownlint
+    - [ ] Reek
+    - [ ] bundler-audit
 - [ ] test coverage
 - [ ] code quality metrics
-- [ ] pre-commit hooks
+- [ ] git hooks (pre-commit, pre-push, etc)
     - [ ] linting
     - [ ] tests
+    - [ ] security checks (bundle audit, etc)
+- [ ] ISSUES_TEMPLATE
+- [ ] PULL_REQUEST_TEMPLATE
+- [ ] `.editorconfig`
 
 ## Specs
 
@@ -103,7 +124,6 @@ Here's a list of things I'd like to complete to make Grammy **great**.
     - [x] scanner
     - [ ] combinators
     - [x] grammar
-    - [ ] parser
     - [x] parse tree
     - [ ] AST builder
 - [ ] integration tests
@@ -127,6 +147,7 @@ Here's a list of things I'd like to complete to make Grammy **great**.
     - [ ] install with the gem
     - [ ] `--help`
     - [ ] `--version`
+    - [ ] `--json` (use JSON nesting for parse tree nesting)
     - [ ] `<grammar_file>` to output a serialized parse tree, with input from `STDIN`
 
 ## Support
@@ -134,7 +155,3 @@ Here's a list of things I'd like to complete to make Grammy **great**.
 - [ ] VS Code configuration
     - [ ] tasks (`launch.json`)
     - [ ] recommended extensions
-- [ ] snippets
-- [ ] ISSUES_TEMPLATE
-- [ ] PULL_REQUEST_TEMPLATE
-- [ ] `.editorconfig`
