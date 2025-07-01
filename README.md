@@ -59,6 +59,8 @@ I'm still experimenting with a few different DSL syntaxes for the grammar.
 
 ### Class Methods
 
+NOTE: This is the only syntax currently implemented.
+
 ~~~ ruby
 require 'grammy'
 
@@ -67,10 +69,12 @@ class Arithmetic < Grammy::Grammar
   start :expression
 
   # Define the rules.
-  rule(:expression) { term + (str("+") + term)[0..] }
-  rule(:term) { factor + (str("*") + factor)[0..] }
+  rule(:expression) { term + (plus + term)[0..] }
+  rule(:term) { factor + (times + factor)[0..] }
   rule(:factor) { number | parens(expression) }
-  rule(:number) { reg(/\d+/) }
+  terminal(:number) { /\d+/ }  # You can also use `token` instead of `terminal`.
+  terminal(:plus) { "+" }      # A terminal rule matches a string or regex, without needing `str` or `reg`.
+  terminal(:times) { "*" }     # Other than that, it works like a normal rule.
 
   # Define any custom combinators.
   def parens(exp) = str("(") + expression + str(")")
@@ -79,6 +83,8 @@ end
 
 ### Decorated Methods
 
+NOTE: This syntax has not been implemented yet.
+
 ~~~ ruby
 require 'grammy'
 
@@ -87,10 +93,12 @@ class Arithmetic < Grammy::Grammar
   start :expression
 
   # Define the rules.
-  rule def expression = term + (str("+") + term)[0..]
-  rule def term = factor + (str("*") + factor)[0..]
+  rule def expression = term + (plus + term)[0..]
+  rule def term = factor + (times + factor)[0..]
   rule def factor = number | parens(expression)
-  rule def number = reg(/\d+/)
+  terminal def number = /\d+/
+  terminal def plus = "+"
+  terminal def times = "*"
 
   # Define any custom combinators.
   def parens(exp) = str("(") + expression + str(")")
@@ -98,6 +106,8 @@ end
 ~~~
 
 ### Instance Methods
+
+NOTE: This syntax has not been implemented yet.
 
 ~~~ ruby
 require 'grammy'
@@ -110,7 +120,7 @@ class Arithmetic < Grammy::Grammar
   def expression = rule { term + (str("+") + term)[0..] }
   def term = rule { factor + (str("*") + factor)[0..] }
   def factor = rule { number | parens(expression) }
-  def number = rule { reg(/\d+/) }
+  def number = terminal { /\d+/ }
 
   # Define any custom combinators.
   def parens(exp) = str("(") + expression + str(")")

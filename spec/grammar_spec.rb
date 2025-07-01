@@ -9,7 +9,9 @@ RSpec.describe Grammy::Grammar do
   subject(:grammar) do
     Class.new(described_class) do
       start :greet
-      rule(:greet) { "hello" }
+      rule(:greet) { hello + wsp + world }
+      terminal(:hello) { "hello" }
+      terminal(:world) { "world" }
     end
   end
   let(:scanner) { instance_double(Grammy::Scanner, match: nil) }
@@ -27,6 +29,13 @@ RSpec.describe Grammy::Grammar do
     end
   end
 
+  describe ".terminal" do
+    it "stores the rule definition, for access via `.rules`" do
+      expect(grammar.rules).to have_key(:hello)
+      expect(grammar.rules).to have_key(:world)
+    end
+  end
+
   describe ".start_rule" do
     it "returns the name of the start rule" do
       expect(grammar.start_rule).to eq(:greet)
@@ -40,6 +49,26 @@ RSpec.describe Grammy::Grammar do
     let(:match_results) { results.map(&:text) }
     let(:results) { parse_tree.leaves.flatten }
     let(:parse_tree) { grammar_instance.execute_rule(rule) }
+
+    context "with a `terminal` (AKA `token`)" do
+
+      before do
+        grammar.class_eval do
+          rule(:match1) { seq(abc, num) }
+
+          terminal(:abc) { "abc" }
+          token(:num, "123")
+        end
+      end
+
+      let(:rule) { :match1 }
+
+      it "returns a Match matching the string" do
+        expect(parse_tree.name).to eq("match1")
+        expect(results.map(&:class)).to eq([Grammy::Match, Grammy::Match])
+        expect(match_results).to eq(["abc", "123"])
+      end
+    end
 
     context "with a `str` combinator" do
 

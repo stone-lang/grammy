@@ -16,14 +16,34 @@ module Grammy
       # DSL for defining grammar rules.
       def start(rule_name) = @start_rule = rule_name
       def rule(name, &)
-        rules[name] = lambda { |_|
+        rule_proc = lambda { |_|
           results = instance_eval(&)
           children = Array(results).flatten.map { |result|
             result.is_a?(Grammy::Matcher) ? result.match(@scanner) : result
           }
           Grammy::ParseTree.new(name.to_s, children.flatten)
         }
+        define_method(name, &rule_proc)
+        rules[name] = rule_proc
       end
+
+      # Examples:
+      #   terminal(:number, /\d+/)
+      #   terminal(:number) { /\d+/ }
+      #   terminal(:open_paren, "(")
+      #   terminal(:open_paren) { "(" }
+      def terminal(name, pattern = nil, &block)
+        fail ArgumentError, "may only supply a pattern OR a block to #{__callee__}" if pattern && block
+        pattern ||= yield if block
+        if pattern.is_a?(Regexp)
+          terminal_proc = -> { Grammy::Matcher::Regexp.new(pattern) }
+        else
+          terminal_proc = -> { Grammy::Matcher::String.new(pattern) }
+        end
+        define_method(name, &terminal_proc)
+        rules[name] = terminal_proc
+      end
+      alias token terminal
 
       # Access to the rules.
       def start_rule = @start_rule || @rules.first || :start

@@ -31,7 +31,11 @@ Here's a list of things I'd like to complete to make Grammy **great**.
         - `rule def expression = term + (str("+") + term)[0..]`
 - [x] start rule
     - [x] defaults to first defined rule
-- [ ] token/terminal rules
+- [x] `terminal` (AKA `token`) rules
+- [ ] AST generation
+    - [ ] tree transformation DSL
+    - [ ] AST builder
+    - [ ] actions in grammar rules
 
 ## Setup
 
