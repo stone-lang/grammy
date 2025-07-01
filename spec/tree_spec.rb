@@ -3,7 +3,6 @@ require "grammy/token"
 require "grammy/match"
 
 
-# rubocop:disable Metrics/ModuleLength
 module Grammy
   RSpec.describe Tree do
     let(:empty_tree) { described_class.new("Empty") }
@@ -124,4 +123,3 @@ module Grammy
     end
   end
 end
-# rubocop:enable Metrics/ModuleLength

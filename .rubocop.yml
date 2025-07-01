@@ -84,12 +84,6 @@ Performance/StringInclude:
 Performance/RedundantMatch:
   Enabled: false
 
-# Prefer `class X < Data.define(...)` over `X = Data.define(...)`.
-# It makes nested constants work as expected.
-# See https://allaboutcoding.ghinda.com/more-about-how-to-create-a-data-class-in-ruby for details.
-Style/DataInheritance:
-  Enabled: false
-
 # Only disabling this so I can do 1-line `def` with a comment.
 # EXAMPLE: `def foo = 123 # see xyz`
 Style/CommentedKeyword:
@@ -103,10 +97,6 @@ Style/CommentedKeyword:
 #   CountAsOne:
 #     - new
 
-# This rule requires arrays in arguments to be formatted like this 😢:
-# my_method(1, [
-#           1,
-#           2
-# ])
-Layout/FirstArrayElementIndentation:
-  Enabled: false
+# NOTE: I really only want to allow this in the grammar DSL and the tree transformation DSL, to allow 1-liners.
+Style/Semicolon:
+  AllowAsExpressionSeparator: true
