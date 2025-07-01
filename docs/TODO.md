@@ -33,7 +33,7 @@ Here's a list of things I'd like to complete to make Grammy **great**.
     - [x] defaults to first defined rule
 - [x] `terminal` (AKA `token`) rules
 - [ ] AST generation
-    - [ ] tree transformation DSL
+    - [x] tree transformation DSL
     - [ ] AST builder
     - [ ] actions in grammar rules
 
