@@ -92,10 +92,10 @@ Here's a list of things I'd like to complete to make Grammy **great**.
 ## Automation
 
 - [x] `Makefile` for "standard" common tasks
-- [ ] `Rakefile` for "standard" common tasks for Ruby projects
+- [x] `Rakefile` for "standard" common tasks for Ruby projects
     - [ ] update version
         - [ ] verify that CHANGELOG is updated
-    - [ ] upload to RubyGems
+    - [x] upload to RubyGems
     - [ ] update dependencies
         - [ ] Ruby
         - [ ] gems
@@ -139,9 +139,9 @@ Here's a list of things I'd like to complete to make Grammy **great**.
 
 ## Gem
 
-- [ ] publish a gem
-    - [ ] `gemspec`
-    - [ ] upload to RubyGems
+- [x] publish a gem
+    - [x] `gemspec`
+    - [x] publish to RubyGems
 - [ ] CLI
     - [ ] `bin/grammy`
     - [ ] install with the gem
