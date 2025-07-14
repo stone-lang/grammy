@@ -6,6 +6,11 @@ GIT
     reline (0.6.1)
       io-console (~> 0.5)
 
+PATH
+  remote: .
+  specs:
+    grammy (0.10)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -127,10 +132,12 @@ DEPENDENCIES
   amazing_print
   binding_of_caller
   debug (>= 1.0.0)
+  grammy!
   irb
   overcommit
   pry
   rainbow
+  rake
   reline!
   rspec
   rubocop

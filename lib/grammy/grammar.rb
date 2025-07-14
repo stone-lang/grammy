@@ -5,9 +5,6 @@ require "grammy/parse_tree"
 
 
 module Grammy
-
-  VERSION = File.read("VERSION")
-
   class Grammar
 
     include Grammy::Combinator::Primitives

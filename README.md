@@ -292,6 +292,16 @@ See the [LICENSE] for the full details.
 
 [PRs] and [issues] are welcome!
 
+
+## Release
+
+To release a new version, update the version in `lib/VERSION`,
+then build the gem and publish it to RubyGems.
+
+~~~ shell
+make publish
+~~~
+
 ---
 
 [DSL]: https://en.wikipedia.org/wiki/Domain-specific_language

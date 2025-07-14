@@ -54,4 +54,9 @@ bun: .tool-versions
 		bundle install ; \
 	fi
 
-.PHONY: all setup test specs console lint rspec bundle rubocop markdownlint bun
+# Publish gem to Rubygems server.
+publish:
+	rake build
+	rake release
+
+.PHONY: all setup test specs console lint rspec bundle rubocop markdownlint bun publish
