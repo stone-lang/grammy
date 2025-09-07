@@ -4,6 +4,6 @@ require "grammy/grammar"
 
 module Grammy
 
-  VERSION = File.read(File.join("..", "VERSION"))
+  VERSION = "0.10"
 
 end
