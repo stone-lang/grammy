@@ -9,13 +9,26 @@ RSpec.describe Grammy::Grammar do
   subject(:grammar) do
     Class.new(described_class) do
       start :greet
-      rule(:greet) { hello + wsp + world }
+      rule(:greet) { greet2 }
+      rule(:greet2) { greeting }
+      rule(:greeting) { hello + world }
       terminal(:hello) { "hello" }
       terminal(:world) { "world" }
     end
   end
   let(:scanner) { instance_double(Grammy::Scanner, match: nil) }
   let(:grammar_instance) { grammar.new(scanner) }
+
+  describe "a non-terminal rule nested within other non-terminal rules" do
+    subject(:source) { "helloworld" }
+    let(:scanner) { Grammy::Scanner.new(source) }
+
+    it "parse" do
+      parse_tree = grammar.parse(source)
+      pp parse_tree
+      expect(parse_tree.leaves.map(&:to_s)).to eq(["hello", "world"])
+    end
+  end
 
   describe ".start" do
     it "sets the start rule, for access via `.start_rule`" do
