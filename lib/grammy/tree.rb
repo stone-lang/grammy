@@ -2,6 +2,8 @@ module Grammy
   class Tree < Data.define(:name, :children)
     INDENTATION = 4
 
+    include Enumerable
+
     # Make it easier to create nested trees.
     def self.new(name, children = [], &block)
       children = yield if block
@@ -12,6 +14,19 @@ module Grammy
     def leaves = children.flat_map { it.is_a?(self.class) ? it.leaves : it }.compact
 
     def to_s(level = 0) = ([to_s_base(level)] + children.map{ to_s_child(it, level) }).join("\n")
+
+    # Walk the tree in pre-order, yielding every node (including self).
+    def each(&block)
+      return enum_for(:each) unless block_given?
+      yield self
+      children.each do |child|
+        if child.respond_to?(:children) && child.respond_to?(:each)
+          child.each(&block)
+        else
+          yield child
+        end
+      end
+    end
 
     def inspect(level = 0) = ([inspect_base(level)] + children.map{ to_s_child(it, level) }).join("\n")
     def to_h = {name:, children: children.map(&:to_h)}
