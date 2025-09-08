@@ -1,13 +1,18 @@
 module Grammy
-  class Tree < Data.define(:name, :children)
+  class Tree
+
     INDENTATION = 4
 
     include Enumerable
 
+    attr_reader :name
+    attr_reader :children
+
     # Make it easier to create nested trees.
-    def self.new(name, children = [], &block)
+    def initialize(name, children = [], &block)
       children = yield if block
-      super(name:, children: Array(children))
+      @name = name
+      @children = Array(children)
     end
 
     def empty? = children.flatten.compact.empty?
