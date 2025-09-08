@@ -33,14 +33,16 @@ module Grammy
       end
     end
 
-    def inspect(level = 0) = ([inspect_base(level)] + children.map{ to_s_child(it, level) }).join("\n")
+    def inspect(level = 0) = ([inspect_base(level)] + Array(children&.map{ inspect_child(it, level) })).join("\n")
     def to_h = {name:, children: children.map(&:to_h)}
     def pretty_print(pp) = pp.text inspect # For IRB output.
 
     private def to_s_base(level) = "#{indent(level)}#{name}"
-    private def inspect_base(level) = "#{indent(level)}#<#{class_name} #{name.inspect}>"
     private def to_s_child(child, level) = child.is_a?(self.class) ? child.to_s(level + 1) : to_s_leaf(child, level + 1)
     private def to_s_leaf(leaf, level) = "#{indent(level)}#{leaf}"
+    private def inspect_base(level) = "#{indent(level)}#<#{class_name} #{name.inspect}>"
+    private def inspect_child(child, level) = child.is_a?(self.class) ? child.inspect(level + 1) : inspect_leaf(child, level + 1)
+    private def inspect_leaf(leaf, level) = "#{indent(level)}#{leaf.inspect}"
     private def indent(level) = " " * (level * INDENTATION)
     private def class_name = self.class.name.split("::").last
 
