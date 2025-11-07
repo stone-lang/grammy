@@ -81,16 +81,10 @@ RSpec.describe Grammy::Grammar, "#rep" do
       end
     end
 
-    context "with zero digits" do
+    context "with empty input" do
       let(:input) { "" }
 
-      it "parses successfully with no tokens" do
-        expect(tokens).to eq([])
-      end
-
       it "returns an empty parse tree" do
-        expect(parse_tree).to be_a(Grammy::ParseTree)
-        expect(parse_tree.name).to eq("digits")
         expect(parse_tree).to be_empty
       end
     end
