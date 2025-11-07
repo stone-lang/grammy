@@ -100,3 +100,11 @@ Style/CommentedKeyword:
 # NOTE: I really only want to allow this in the grammar DSL and the tree transformation DSL, to allow 1-liners.
 Style/Semicolon:
   AllowAsExpressionSeparator: true
+
+Style/ArgumentsForwarding:
+  Enabled: true
+  UseAnonymousForwarding: true # Prefer `...` over `*, **, &`
+  RedundantBlockArgumentNames: [] # Always allow explicit block variable names.
+
+Naming/BlockForwarding:
+  Enabled: false # Always allow explicit block variable names.
