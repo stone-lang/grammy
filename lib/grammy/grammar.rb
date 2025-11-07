@@ -60,7 +60,7 @@ module Grammy
     # Primitive combinators will need access to the scanner.
     def initialize(scanner) = @scanner = scanner
 
-    def execute_rule(rule_name) = send(rule_name)
+    def execute_rule(rule_name) = public_send(rule_name)
     def rules = self.class.rules
 
   end

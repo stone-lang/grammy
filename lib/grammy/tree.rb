@@ -22,7 +22,7 @@ module Grammy
 
     # Walk the tree in pre-order, yielding every node (including self).
     def each(&block)
-      return enum_for(:each) unless block_given?
+      return enum_for(:each) unless block
       yield self
       children.each do |child|
         if child.respond_to?(:children) && child.respond_to?(:each)
