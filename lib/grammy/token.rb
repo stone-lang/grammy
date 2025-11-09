@@ -13,6 +13,7 @@ module Grammy
     end
 
     # TODO: Extract this into a Data helper. Better yet, create a Value class for value objects.
+    # UHH: I think Data **already** has `with`!
     def with(value:) = self.class.new(name, match, value)
 
     def text = match.text
