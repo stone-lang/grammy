@@ -37,7 +37,7 @@ Here's a list of things I'd like to complete to make Grammy **great**.
     - [x] tree transformation DSL
     - [ ] AST builder
     - [ ] actions in grammar rules
-- [ ] user-defined combinators
+- [x] user-defined combinators
 - [ ] error handling
     - [ ] error messages
     - [ ] error recovery
