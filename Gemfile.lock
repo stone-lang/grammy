@@ -9,7 +9,7 @@ GIT
 PATH
   remote: .
   specs:
-    grammy (0.10)
+    grammy (0.11)
 
 GEM
   remote: https://rubygems.org/
