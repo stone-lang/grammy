@@ -84,7 +84,7 @@ Here's a list of things I'd like to complete to make Grammy **great**.
         - [ ] test coverage
         - [ ] dependencies status
 - [x] `TODO` (and keep it updated)
-- [ ] `CHANGELOG` (and keep it updated)
+- [x] `CHANGELOG` (and keep it updated)
 - [x] `LICENSE` file (and keep it updated)
 - [ ] code of conduct
 - [ ] FAQ
