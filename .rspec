@@ -1,5 +1,6 @@
 -I lib
 --require spec_helper
+--require "support/suppress_warnings"
 --require debug
 --require pry
 --no-profile
