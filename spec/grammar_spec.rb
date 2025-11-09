@@ -23,9 +23,9 @@ RSpec.describe Grammy::Grammar do
     subject(:source) { "helloworld" }
     let(:scanner) { Grammy::Scanner.new(source) }
 
-    it "parse" do
+    it "parses correctly" do
       parse_tree = grammar.parse(source)
-      pp parse_tree
+      pp parse_tree if ENV["DEBUG"]
       expect(parse_tree.leaves.map(&:to_s)).to eq(["hello", "world"])
     end
   end
