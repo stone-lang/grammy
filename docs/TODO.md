@@ -1,5 +1,141 @@
 # TODO
 
+## IMMEDIATE (DO NOT COMMIT!) - Check these off below
+
+- [ ] Update gem
+    - Also allow other person to use `preserves` gem name
+
+- [ ] AI thread:
+
+~~~markdown
+Prompt: Allow user-defined combinators to wrap non-terminal rules
+
+## Problem
+
+Currently, user-defined combinators in Grammy can only wrap terminals (matchers), not rules (non-terminals).
+
+Example that DOESN'T work:
+```ruby
+class MyGrammar < Grammy::Grammar
+  start :expr
+  rule(:expr) { parens(number) }
+  rule(:number) { reg(/\d+/) }  # Non-terminal rule
+
+  def parens(exp) = str("(") + exp + str(")")
+end
+```
+
+When `number` is called as a rule, it executes immediately and returns a `ParseTree`, not a `Matcher`. The sequence combinator (`+`) then fails because it can't work with ParseTrees.
+
+Example that DOES work (using a terminal):
+```ruby
+class MyGrammar < Grammy::Grammar
+  start :expr
+  rule(:expr) { parens(number) }
+  terminal(:number, /\d+/)  # Terminal - returns a Matcher
+
+  def parens(exp) = str("(") + exp + str(":")
+end
+```
+
+## Goal
+
+Make it possible to pass rule references (non-terminals) to user-defined combinators, so `parens(number)` works whether `number` is a terminal or a rule.
+
+## Context
+
+- File: `lib/grammy/grammar.rb`
+- When a rule is called within a rule block, it should return something that can be composed with combinators
+- The grammar DSL currently uses `instance_eval` to evaluate rule blocks
+- Test file: `spec/grammar/user_defined_combinator_spec.rb`
+
+## Constraints
+
+- Don't break existing functionality with terminals
+- Maintain the clean DSL syntax
+- Keep the rule execution model intact for normal rule calls
+- Should work with all combinators (`+`, `|`, `[]`, etc.)
+
+## Test Case
+
+```ruby
+class UserDefinedGrammar < Grammy::Grammar
+  start :us
+  rule(:us) { parens(number) }
+  rule(:number) { reg(/\d+/) }  # Should work as a rule now
+
+  def parens(exp) = str("(") + exp + str(")")
+end
+
+# Should parse "(123)" successfully
+```
+~~~
+
+- [ ] COMMIT: BUGFIX: rules are able to reference other nested rules
+    - lib/grammy/grammar.rb and tests
+
+- [ ] Tree.each specs
+    - git fixup where I added `Enumerable`
+    - move specs to proper place
+    - commit message should mention pre-order traversal.
+- [ ] Add AST transformation DSL
+    - I may have already tried to commit it, but missed `lib/ast*` and `spec/ast_spec.rb`
+    - Does `tree.each` traversal help?
+- [ ] AI-assisted refactoring (suggestions, missing, etc)
+    - [x] tests
+    - [ ] code
+        - [ ] Rename Matcher to Primitive or Combinator?
+            - [ ] I suppose `custom.rb` would be the only other file in `combinators`
+    - [ ] README
+    - [ ] TODO
+- [ ] add `Makefile` / `Rakefile` rules for common tasks (AI) (BELOW)
+    - [ ] publish to RubyGems (BELOW)
+        - [ ] check that the `CHANGELOG` is updated
+    - [ ] update version (BELOW)
+    - [ ] update dependencies (BELOW)
+        - [ ] Ruby
+        - [ ] gems
+        - [ ] RuboCop (see if any rules need updated config)
+        - [ ] bun
+
+- [x] START ON STONE 0.10!
+
+- [ ] CHANGELOG
+
+- [ ] https://guides.rubygems.org/security/
+
+- [ ] combinator aliases (BELOW)
+    - [ ] `zero_or_more`
+    - [ ] `one_or_more`
+    - [ ] `zero_or_one`, `optional` (and maybe `_opt`?)
+    - [ ] update README/TODO
+
+- Release VERSION 0.11
+
+- [ ] indentation (BELOW)
+    - [ ] README updates
+- [ ] CHANGELOG
+
+- Release VERSION 0.12
+
+- [ ] line continuation (BELOW)
+    - [ ] README updates
+- [ ] CHANGELOG
+
+- Release VERSION 0.13
+
+- [ ] error handling (BELOW)
+- [ ] CHANGELOG
+
+- Release VERSION 0.14
+
+- [ ] AI prompts
+    - [ ] Copilot
+    - [ ] Claude
+    - [ ] ChatGPT
+- [ ] easier debugging (lib/extensions/debug.rb)
+- [ ] CHANGELOG
+
 Here's a list of things I'd like to complete to make Grammy **great**.
 
 ## Scanner
