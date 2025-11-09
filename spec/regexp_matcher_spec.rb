@@ -10,6 +10,11 @@ RSpec.describe Grammy::Matcher::Regexp do
   let(:input) { "abcdef" }
   let(:match_result) { matcher.match(scanner) }
 
+  it_behaves_like "a matcher" do
+    let(:matching_input) { "abcdef" }
+    let(:non_matching_input) { "xyz123" }
+  end
+
   describe "#match" do
     it "returns a Match with the matched pattern" do
       expect(match_result.text).to eq("abc")

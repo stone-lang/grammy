@@ -225,7 +225,7 @@ RSpec.describe Grammy::Grammar, :integration do
       let(:input) { "ab" }
       let(:expected_tokens) { ["a", "b"] }
 
-      it "parses and returns all matches 230" do
+      it "parses optional element when present" do
         expect(tokens.map(&:to_s)).to eq(expected_tokens)
       end
     end

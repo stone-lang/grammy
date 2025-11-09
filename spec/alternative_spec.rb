@@ -15,6 +15,11 @@ RSpec.describe Grammy::Matcher::Alternative do
   let(:input) { "abc1234" }
   let(:match_result) { matcher.match(scanner) }
 
+  it_behaves_like "a matcher" do
+    let(:matching_input) { "abc1234" }
+    let(:non_matching_input) { "xyz" }
+  end
+
   describe "#match" do
     it "returns a Token with the matched pattern" do
       expect(match_result.text).to eq("abc")
