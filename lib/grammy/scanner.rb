@@ -20,7 +20,7 @@ module Grammy
     # Returns `nil` if pattern does not match.
     # Otherwise, updates @location and returns a Match object.
     def match_string(pattern)
-      return nil if @location.index >= @input.size
+      return nil if @location.offset >= @input.size
       return nil unless remaining_input.start_with?(pattern)
       match_text(pattern)
     end
@@ -29,7 +29,7 @@ module Grammy
     # Returns `nil` if pattern does not match.
     # Otherwise, updates @location and returns a Match object.
     def match_regexp(pattern)
-      return nil if @location.index >= @input.size
+      return nil if @location.offset >= @input.size
       anchored_regex = Regexp.new("\\A(?:#{pattern.source})", pattern.options)
       match = remaining_input.match(anchored_regex)
       return nil unless match
@@ -54,11 +54,11 @@ module Grammy
     end
 
     def finished?
-      @location.index == @input.size
+      @location.offset == @input.size
     end
 
     private def remaining_input
-      @input[@location.index..]
+      @input[@location.offset..]
     end
 
     # Returns matched text and its location (or nil).
