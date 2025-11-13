@@ -2,6 +2,7 @@ require "grammy/combinator/primitives"
 require "grammy/errors"
 require "grammy/scanner"
 require "grammy/parse_tree"
+require "grammy/matcher/rule"
 require_relative "../extensions/array"
 
 
@@ -13,16 +14,12 @@ module Grammy
     class << self
       # DSL for defining grammar rules.
       def start(rule_name) = @start_rule = rule_name
-      def rule(name, &)
-        rule_proc = lambda {
-          results = instance_eval(&)
-          children = Array.wrap(results).flatten.map { |result|
-            result.is_a?(Grammy::Matcher) ? result.match(@scanner) : result
-          }
-          Grammy::ParseTree.new(name.to_s, children.flatten)
-        }
-        define_method(name, &rule_proc)
-        rules[name] = rule_proc
+      def rule(name, &block)
+        # Store the rule block for later execution
+        rules[name] = block
+
+        # Define a method that returns a RuleMatcher for composition
+        define_method(name) { Grammy::Matcher::Rule.new(self, name) }
       end
 
       # Examples:
@@ -60,7 +57,8 @@ module Grammy
     # Primitive combinators will need access to the scanner.
     def initialize(scanner) = @scanner = scanner
 
-    def execute_rule(rule_name) = public_send(rule_name)
+    def execute_rule(rule_name) = public_send(rule_name).match(@scanner)
+
     def rules = self.class.rules
 
   end
