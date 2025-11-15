@@ -11,6 +11,7 @@ module Grammy
       super
     end
 
+    def empty? = text.nil?
     def to_s = text
     def inspect = "#<Match #{text} (#{start_location}..#{end_location})>"
     def pretty_print(pp) = pp.text inspect # For IRB output.

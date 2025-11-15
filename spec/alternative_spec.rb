@@ -33,5 +33,18 @@ RSpec.describe Grammy::Matcher::Alternative do
       end
     end
 
+    context "when an alternative returns an empty ParseTree" do
+      let(:empty_tree_matcher) do
+        double("EmptyTreeMatcher", match: Grammy::ParseTree.new(:empty_rule, []))
+      end
+      let(:alternatives) { [empty_tree_matcher, Grammy::Matcher::Regexp.new(/abc/)] }
+      let(:input) { "abc" }
+
+      it "tries the next alternative and succeeds" do
+        expect(match_result).not_to be_nil
+        expect(match_result.text).to eq("abc")
+      end
+    end
+
   end
 end

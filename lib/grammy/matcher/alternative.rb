@@ -11,7 +11,7 @@ module Grammy
         @alternatives.each do |matcher|
           mark = scanner.mark
           result = matcher.match(scanner)
-          return result if result
+          return result if result && !result.empty?
           scanner.backtrack(mark)
         end
         nil
