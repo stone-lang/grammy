@@ -49,7 +49,15 @@ module Grammy
         scanner = Grammy::Scanner.new(input)
         grammar = self.new(scanner)
         result = grammar.execute_rule(start)
-        fail(Grammy::ParseError, "Parsing failed at location #{scanner.location}") if result.nil? || result.empty? && !scanner.input.empty?
+
+        # Handle nil result: if all input consumed, return empty ParseTree; otherwise fail
+        if result.nil?
+          fail(Grammy::ParseError, "Parsing failed at location #{scanner.location}") unless scanner.input.empty?
+          result = Grammy::ParseTree.new(start.to_s, [])
+        end
+
+        # Fail if there's unparsed input remaining
+        fail(Grammy::ParseError, "Parsing failed at location #{scanner.location}") if result.empty? && !scanner.input.empty?
         result
       end
     end

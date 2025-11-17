@@ -21,7 +21,10 @@ module Grammy
         # If the result is a matcher, match it to get actual results
         result = result.match(scanner) if result.is_a?(Grammy::Matcher)
 
-        # Wrap results in a ParseTree (nil becomes empty array, preserving old behavior)
+        # Return nil if there's no match (don't create empty ParseTree nodes for failures)
+        return nil if result.nil?
+
+        # Wrap results in a ParseTree
         children = Array.wrap(result).flatten
         Grammy::ParseTree.new(@rule_name.to_s, children)
       end
