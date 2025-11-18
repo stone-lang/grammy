@@ -1,4 +1,6 @@
 SHELL := /bin/bash
+RUBYOPT := --enable=frozen-string-literal
+export RUBYOPT
 
 all: setup test lint
 
