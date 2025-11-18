@@ -16,15 +16,29 @@ module Grammy
       end
 
       def transform(node)
+        return apply_rule(node) if has_rule?(node)
+        return node unless node.respond_to?(:children)
+        return transform(node.children.first) if single_child?(node)
+
+        transform_all_children(node)
+      end
+
+      private def has_rule?(node)
+        self.class.transform_rules[node.name.to_sym]
+      end
+
+      private def apply_rule(node)
         rule = self.class.transform_rules[node.name.to_sym]
-        if rule
-          instance_exec(node, &rule)
-        elsif node.respond_to?(:children)
-          children = node.children.map { |child| transform(child) }
-          node.class.new(node.name, children)
-        else
-          node
-        end
+        instance_exec(node, &rule)
+      end
+
+      private def single_child?(node)
+        node.children.size == 1
+      end
+
+      private def transform_all_children(node)
+        children = node.children.map { |child| transform(child) }
+        node.class.new(node.name, children)
       end
     end
   end

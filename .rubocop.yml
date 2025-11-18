@@ -109,3 +109,8 @@ Style/ArgumentsForwarding:
 
 Naming/BlockForwarding:
   Enabled: false # Always allow explicit block variable names.
+
+# Allow `has_` prefix for predicate methods that check for existence of something.
+Naming/PredicatePrefix:
+  AllowedMethods:
+    - has_rule?

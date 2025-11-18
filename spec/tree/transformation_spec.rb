@@ -59,4 +59,55 @@ RSpec.describe Grammy::Tree::Transformation, :integration do
     end
   end
 
+  context "with nodes that have a single child" do
+    let(:transformer_class) do
+      Class.new do
+        include Grammy::Tree::Transformation
+
+        transform(:number) { |token| token.with(value: token.text.to_i) }
+      end
+    end
+
+    let(:parse_tree) {
+      Grammy::ParseTree.new(:expression, [
+        Grammy::ParseTree.new(:primary, [
+          Grammy::Token.new(:number, "42"),
+        ]),
+      ])
+    }
+
+    it "delegates to the single child by default" do
+      ast = transformer.transform(parse_tree)
+      # Should unwrap both :expression and :primary to get to the number token
+      expect(ast.value).to eq(42)
+    end
+  end
+
+  context "with nodes that have multiple children and no transform rule" do
+    let(:transformer_class) do
+      Class.new do
+        include Grammy::Tree::Transformation
+
+        transform(:number) { |token| token.with(value: token.text.to_i) }
+      end
+    end
+
+    let(:parse_tree) {
+      Grammy::ParseTree.new(:tuple, [
+        Grammy::Token.new(:number, "1"),
+        Grammy::Token.new(:comma, ","),
+        Grammy::Token.new(:number, "2"),
+      ])
+    }
+
+    it "recursively transforms children and reconstructs the node" do
+      ast = transformer.transform(parse_tree)
+      expect(ast.name).to eq(:tuple)
+      expect(ast.children.size).to eq(3)
+      expect(ast.children[0].value).to eq(1)
+      expect(ast.children[1].text).to eq(",")
+      expect(ast.children[2].value).to eq(2)
+    end
+  end
+
 end
