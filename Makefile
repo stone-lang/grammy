@@ -2,6 +2,8 @@ SHELL := /bin/bash
 
 all: setup test lint
 
+ci: specs lint
+
 setup: bun bundle node_modules/.bin/markdownlint-cli2
 
 test: specs
@@ -11,7 +13,7 @@ specs: rspec
 console: bundle
 	@bundle exec pry -I lib -r grammy
 
-lint: markdownlint rubocop
+lint: rubocop markdownlint
 
 rspec: bundle
 	DEBUG=0 bundle exec rspec
@@ -59,4 +61,4 @@ publish:
 	rake build
 	rake release
 
-.PHONY: all setup test specs console lint rspec bundle rubocop markdownlint bun publish
+.PHONY: all ci setup test specs console lint rspec bundle rubocop markdownlint bun publish

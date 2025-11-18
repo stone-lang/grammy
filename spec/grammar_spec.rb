@@ -25,7 +25,7 @@ RSpec.describe Grammy::Grammar do
 
     it "parses correctly" do
       parse_tree = grammar.parse(source)
-      pp parse_tree if ENV["DEBUG"]
+      pp parse_tree if ENV["DEBUG"] && ENV["DEBUG"] != "0"
       expect(parse_tree.leaves.map(&:to_s)).to eq(["hello", "world"])
     end
   end

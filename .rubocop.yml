@@ -12,6 +12,7 @@ AllCops:
   TargetRubyVersion: 3.4
   # Fail on any new cops that are added. I'll address them every time I upgrade RuboCop.
   NewCops: enable
+  SuggestExtensions: false
   Exclude:
     - "spec/README.md"
 
