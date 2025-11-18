@@ -19,7 +19,7 @@ RSpec.describe Grammy::Grammar, "#rep" do
 
       it "includes all matches in the parse tree" do
         expect(parse_tree).to be_a(Grammy::ParseTree)
-        expect(parse_tree.name).to eq("digits")
+        expect(parse_tree.name).to eq(:digits)
         expect(parse_tree.children.size).to eq(5)
       end
     end
@@ -33,7 +33,7 @@ RSpec.describe Grammy::Grammar, "#rep" do
 
       it "includes the match in the parse tree" do
         expect(parse_tree).to be_a(Grammy::ParseTree)
-        expect(parse_tree.name).to eq("digits")
+        expect(parse_tree.name).to eq(:digits)
         expect(parse_tree.children.size).to eq(1)
       end
     end
@@ -64,7 +64,7 @@ RSpec.describe Grammy::Grammar, "#rep" do
 
       it "includes all matches in the parse tree" do
         expect(parse_tree).to be_a(Grammy::ParseTree)
-        expect(parse_tree.name).to eq("digits")
+        expect(parse_tree.name).to eq(:digits)
       end
     end
 
@@ -77,7 +77,7 @@ RSpec.describe Grammy::Grammar, "#rep" do
 
       it "includes the match in the parse tree" do
         expect(parse_tree).to be_a(Grammy::ParseTree)
-        expect(parse_tree.name).to eq("digits")
+        expect(parse_tree.name).to eq(:digits)
       end
     end
 
@@ -115,7 +115,7 @@ RSpec.describe Grammy::Grammar, "#rep" do
 
       it "includes the reg in the parse tree" do
         expect(parse_tree).to be_a(Grammy::ParseTree)
-        expect(parse_tree.name).to eq("digits_then_a")
+        expect(parse_tree.name).to eq(:digits_then_a)
       end
     end
 
@@ -136,7 +136,7 @@ RSpec.describe Grammy::Grammar, "#rep" do
 
       it "returns an empty parse tree" do
         expect(parse_tree).to be_a(Grammy::ParseTree)
-        expect(parse_tree.name).to eq("digits_then_a")
+        expect(parse_tree.name).to eq(:digits_then_a)
       end
     end
   end
@@ -158,7 +158,7 @@ RSpec.describe Grammy::Grammar, "#rep" do
 
       it "includes all matches in the parse tree" do
         expect(parse_tree).to be_a(Grammy::ParseTree)
-        expect(parse_tree.name).to eq("digits")
+        expect(parse_tree.name).to eq(:digits)
         expect(parse_tree.children.size).to eq(3)
       end
     end

@@ -11,7 +11,7 @@ module Grammy
     # Make it easier to create nested trees.
     def initialize(name, children = [], &block)
       children = yield if block
-      @name = name
+      @name = name.to_sym
       @children = Array(children)
     end
 

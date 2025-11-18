@@ -26,7 +26,7 @@ module Grammy
 
         # Wrap results in a ParseTree
         children = Array.wrap(result).flatten
-        Grammy::ParseTree.new(@rule_name.to_s, children)
+        Grammy::ParseTree.new(@rule_name, children)
       end
 
     end

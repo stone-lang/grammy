@@ -52,7 +52,7 @@ end
 class UserDefinedGrammarWithRuleRef < Grammy::Grammar
   start :us
   rule(:us) { parens(number) }
-  rule(:number) { reg(/\d+/) }  # Now a rule, not a terminal
+  rule(:number) { reg(/\d+/) } # Now a rule, not a terminal
 
   # User-defined combinator that wraps an expression in parentheses
   def parens(exp) = str("(") + exp + str(")")

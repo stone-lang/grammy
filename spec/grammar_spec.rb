@@ -77,7 +77,7 @@ RSpec.describe Grammy::Grammar do
       let(:rule) { :match1 }
 
       it "returns a Match matching the string" do
-        expect(parse_tree.name).to eq("match1")
+        expect(parse_tree.name).to eq(:match1)
         expect(results.map(&:class)).to eq([Grammy::Match, Grammy::Match])
         expect(match_results).to eq(["abc", "123"])
       end
@@ -94,7 +94,7 @@ RSpec.describe Grammy::Grammar do
       let(:rule) { :match1 }
 
       it "returns a Token matching the string" do
-        expect(parse_tree.name).to eq("match1")
+        expect(parse_tree.name).to eq(:match1)
         expect(results.map(&:class)).to eq([Grammy::Match])
         expect(match_results).to eq(["abc"])
       end
@@ -111,7 +111,7 @@ RSpec.describe Grammy::Grammar do
       let(:rule) { :seq1 }
 
       it "returns a Token for each match of the string" do
-        expect(parse_tree.name).to eq("seq1")
+        expect(parse_tree.name).to eq(:seq1)
         expect(match_results).to eq(["abc", "123"])
       end
     end
@@ -127,7 +127,7 @@ RSpec.describe Grammy::Grammar do
       let(:rule) { :alt1 }
 
       it "returns a Token with the matched pattern" do
-        expect(parse_tree.name).to eq("alt1")
+        expect(parse_tree.name).to eq(:alt1)
         expect(match_results).to eq(["abc"])
       end
     end
@@ -147,7 +147,7 @@ RSpec.describe Grammy::Grammar do
       it "allows 0 or 1 matches" do
         parse_tree = grammar_instance.execute_rule(:rep0_1)
         match_results = parse_tree.leaves.map(&:text)
-        expect(parse_tree.name).to eq("rep0_1")
+        expect(parse_tree.name).to eq(:rep0_1)
         expect(match_results).to eq(["123x"])
       end
 

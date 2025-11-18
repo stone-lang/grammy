@@ -1,7 +1,7 @@
 require "grammy/grammar"
 require "timeout"
 
-
+# rubocop:disable RSpec/DescribeMethod
 RSpec.describe Grammy::Grammar, "rule recursion" do
   subject(:parse_result) { grammar.parse(input) }
   let(:tokens) { parse_result.tokens.map(&:to_s) }
@@ -49,3 +49,4 @@ class LeftRecursionGrammar < Grammy::Grammar
   start :expr
   rule(:expr) { expr + str("a") | str("a") }
 end
+# rubocop:enable RSpec/DescribeMethod

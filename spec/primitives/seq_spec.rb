@@ -18,7 +18,7 @@ RSpec.describe Grammy::Grammar, "#seq" do
 
     it "parses and returns the parse tree" do
       expect(parse_tree).to be_a(Grammy::ParseTree)
-      expect(parse_tree.name).to eq("greeting")
+      expect(parse_tree.name).to eq(:greeting)
     end
   end
 

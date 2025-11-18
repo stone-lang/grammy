@@ -27,12 +27,12 @@ module Grammy
 
     describe ".new" do
       it "creates a tree with a name and children" do
-        expect(simple_tree.name).to eq("Simple")
+        expect(simple_tree.name).to eq(:Simple)
         expect(simple_tree.children).to eq([leaf_first, leaf_second])
       end
 
       it "accepts a block for nested creation" do
-        expect(nested_tree.name).to eq("Parent")
+        expect(nested_tree.name).to eq(:Parent)
         expect(nested_tree.children.first).to eq(leaf_first)
         expect(nested_tree.children[1].children[1]).to eq("Nested Leaf")
       end
@@ -102,7 +102,7 @@ module Grammy
       it "converts a simple tree to hash" do
         tree = described_class.new("root", [leaf_first])
         expect(tree.to_h).to eq({
-                                  name: "root",
+                                  name: :root,
                                   children: [leaf_first.to_h]
                                 })
       end
@@ -111,10 +111,10 @@ module Grammy
         nested = described_class.new("child", [leaf_first])
         tree = described_class.new("root", [nested])
         expect(tree.to_h).to eq({
-                                  name: "root",
+                                  name: :root,
                                   children: [
                                     {
-                                      name: "child",
+                                      name: :child,
                                       children: [leaf_first.to_h]
                                     }
                                   ]

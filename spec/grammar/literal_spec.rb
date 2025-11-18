@@ -19,7 +19,7 @@ RSpec.describe LiteralGrammar do
 
     it "parses and returns the parse tree" do
       expect(parse_tree).to be_a(Grammy::ParseTree)
-      expect(parse_tree.name).to eq("plus")
+      expect(parse_tree.name).to eq(:plus)
     end
   end
 

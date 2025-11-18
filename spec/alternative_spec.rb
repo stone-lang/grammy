@@ -35,7 +35,7 @@ RSpec.describe Grammy::Matcher::Alternative do
 
     context "when an alternative returns an empty ParseTree" do
       let(:empty_tree_matcher) do
-        double("EmptyTreeMatcher", match: Grammy::ParseTree.new(:empty_rule, []))
+        instance_double(Grammy::Matcher, match: Grammy::ParseTree.new(:empty_rule, []))
       end
       let(:alternatives) { [empty_tree_matcher, Grammy::Matcher::Regexp.new(/abc/)] }
       let(:input) { "abc" }
@@ -43,6 +43,28 @@ RSpec.describe Grammy::Matcher::Alternative do
       it "tries the next alternative and succeeds" do
         expect(match_result).not_to be_nil
         expect(match_result.text).to eq("abc")
+      end
+    end
+
+    context "when backtracking between alternatives" do
+      let(:alternatives) {
+        [
+          Grammy::Matcher::Regexp.new(/\d+/),
+          Grammy::Matcher::Regexp.new(/abc/)
+        ]
+      }
+      let(:input) { "abc" }
+
+      it "restores scanner position before trying the next alternative" do
+        initial_position = scanner.location.offset
+        result = matcher.match(scanner)
+        expect(result.text).to eq("abc")
+        expect(scanner.location.offset).to eq(initial_position + 3)
+      end
+
+      it "properly cleans up mark stack on success" do
+        expect { matcher.match(scanner) }.not_to raise_error
+        expect(scanner.instance_variable_get(:@marks)).to be_empty
       end
     end
 

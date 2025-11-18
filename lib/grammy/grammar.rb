@@ -53,7 +53,7 @@ module Grammy
         # Handle nil result: if all input consumed, return empty ParseTree; otherwise fail
         if result.nil?
           fail(Grammy::ParseError, "Parsing failed at location #{scanner.location}") unless scanner.input.empty?
-          result = Grammy::ParseTree.new(start.to_s, [])
+          result = Grammy::ParseTree.new(start, [])
         end
 
         # Fail if there's unparsed input remaining

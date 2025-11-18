@@ -1,6 +1,6 @@
 require "grammy/grammar"
 
-
+# rubocop:disable RSpec/DescribeClass
 RSpec.describe "Alternative matcher with terminals", :integration do
   subject(:parse_tree) { grammar.parse(input) }
 
@@ -12,7 +12,7 @@ RSpec.describe "Alternative matcher with terminals", :integration do
 
       it "produces a non-empty parse tree for the rule" do
         expect(parse_tree).not_to be_nil
-        expect(parse_tree.name).to eq("argument_list")
+        expect(parse_tree.name).to eq(:argument_list)
         # The parse tree should have children representing the matched content
         expect(parse_tree.children.length).to be > 0
       end
@@ -28,7 +28,7 @@ RSpec.describe "Alternative matcher with terminals", :integration do
 
       it "produces a non-empty parse tree for the rule" do
         expect(parse_tree).not_to be_nil
-        expect(parse_tree.name).to eq("argument_list")
+        expect(parse_tree.name).to eq(:argument_list)
         expect(parse_tree.children.length).to be > 0
       end
 
@@ -43,7 +43,7 @@ RSpec.describe "Alternative matcher with terminals", :integration do
 
       it "produces a parse tree for the rule" do
         expect(parse_tree).not_to be_nil
-        expect(parse_tree.name).to eq("argument_list")
+        expect(parse_tree.name).to eq(:argument_list)
       end
 
       it "correctly captures the parentheses tokens" do
@@ -66,3 +66,4 @@ class ArgumentListGrammar < Grammy::Grammar
   terminal(:comma, ", ")
   terminal(:number, /\d+/)
 end
+# rubocop:enable RSpec/DescribeClass
