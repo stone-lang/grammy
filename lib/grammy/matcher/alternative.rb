@@ -11,7 +11,7 @@ module Grammy
         @alternatives.each do |matcher|
           mark = scanner.mark
           result = matcher.match(scanner)
-          if result && !result.empty?
+          if result && (!result.empty? || result.is_a?(Grammy::Match))
             scanner.consume(mark)
             return result
           end
