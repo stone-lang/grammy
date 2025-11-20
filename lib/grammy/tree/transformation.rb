@@ -24,6 +24,8 @@ module Grammy
       end
 
       private def has_rule?(node)
+        return false unless node.respond_to?(:name)
+
         self.class.transform_rules[node.name.to_sym]
       end
 
@@ -37,8 +39,10 @@ module Grammy
       end
 
       private def transform_all_children(node)
-        children = node.children.map { |child| transform(child) }
-        node.class.new(node.name, children)
+        transformed_children = node.children.map { |child| transform(child) }
+        return node.class.new(node.name, transformed_children) if node.respond_to?(:name)
+
+        node.class.new(transformed_children)
       end
     end
   end
