@@ -98,6 +98,37 @@ module Grammy
       end
     end
 
+    describe "#find_child" do
+      it "finds a child by name" do
+        child1 = described_class.new("child1", [leaf_first])
+        child2 = described_class.new("child2", [leaf_second])
+        tree = described_class.new("root", [child1, child2])
+
+        expect(tree.find_child(:child1)).to eq(child1)
+        expect(tree.find_child(:child2)).to eq(child2)
+      end
+
+      it "returns nil when child not found" do
+        tree = described_class.new("root", [leaf_first])
+        expect(tree.find_child(:nonexistent)).to be_nil
+      end
+
+      it "only searches direct children, not descendants" do
+        grandchild = described_class.new("grandchild", [leaf_first])
+        child = described_class.new("child", [grandchild])
+        tree = described_class.new("root", [child])
+
+        expect(tree.find_child(:child)).to eq(child)
+        expect(tree.find_child(:grandchild)).to be_nil
+      end
+
+      it "handles non-tree children gracefully" do
+        tree = described_class.new("root", [leaf_first, "string", 42])
+        expect(tree.find_child(:leaf)).to eq(leaf_first)
+        expect(tree.find_child(:nonexistent)).to be_nil
+      end
+    end
+
     describe "#to_h" do
       it "converts a simple tree to hash" do
         tree = described_class.new("root", [leaf_first])

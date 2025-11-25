@@ -18,6 +18,11 @@ module Grammy
     def empty? = leaves.empty?
     def leaves = children.flat_map { it.is_a?(self.class) ? it.leaves : it }.compact
 
+    # Find a child node by name
+    def find_child(name)
+      children.find { |child| child.respond_to?(:name) && child.name == name }
+    end
+
     def to_s(level = 0) = ([to_s_base(level)] + children.map{ to_s_child(it, level) }).join("\n")
 
     # Walk the tree in pre-order, yielding every node (including self).
