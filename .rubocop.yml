@@ -1,26 +1,14 @@
 ---
 plugins:
-  - rubocop-rspec
-  - rubocop-md
-  - rubocop-performance
-
-inherit_from:
-  - https://raw.githubusercontent.com/booch/config_files/master/ruby/rubocop.yml
+  - rubocop-boochtek
 
 # WARNING: Include and Exclude directives are **not** additive! They wipe out any existing values.
 AllCops:
   TargetRubyVersion: 3.4
   # Fail on any new cops that are added. I'll address them every time I upgrade RuboCop.
   NewCops: enable
-  SuggestExtensions: false
   Exclude:
     - "spec/README.md"
-
-# FIXME: I can't get any Ruby code sections in Markdown files to show any offenses.
-# This assumes that unmarked code blocks are Ruby.
-Markdown:
-  WarnInvalid: true
-  Autodetect: true
 
 # Allow longer lines.
 Layout/LineLength:
@@ -45,20 +33,9 @@ Style/BlockDelimiters:
     # Grammy tree transforms
     - transform
 
-Layout/EmptyLinesAroundClassBody:
-  Enabled: false
-Layout/EmptyLinesAroundModuleBody:
-  Enabled: false
-Layout/EmptyLineBetweenDefs:
-  Enabled: false
-Layout/EmptyLinesAroundBlockBody:
-  Enabled: false
-
 # Be a bit more lenient with RSpec: don't require filename to match class; allow more than 1 expectation per example.
 RSpec/SpecFilePathFormat:
   Enabled: False
-RSpec/MultipleExpectations:
-  Max: 10
 RSpec/ExampleLength:
   Max: 20
 
@@ -90,14 +67,6 @@ Performance/RedundantMatch:
 # EXAMPLE: `def foo = 123 # see xyz`
 Style/CommentedKeyword:
   Enabled: false
-
-# Count `new` as 1 line, for cases where we create nested structures.
-# FIXME: CountAsOne only accepts array/hash/heredoc/method_call.
-# I really want to have it just count `new` calls as a single line.
-# Metrics/MethodLength:
-#   Max: 10
-#   CountAsOne:
-#     - new
 
 # NOTE: I really only want to allow this in the grammar DSL and the tree transformation DSL, to allow 1-liners.
 Style/Semicolon:

@@ -23,8 +23,6 @@ gem "binding_of_caller", require: false
 gem "rake"
 gem "overcommit"
 gem "rubocop", require: false
-gem "rubocop-rspec", require: false
-gem "rubocop-md", require: false
-gem "rubocop-performance", require: false
+gem "rubocop-boochtek", path: "/Users/craigbuchek/Work/rubocop-boochtek", require: false
 gem "ruby-lsp", require: false
 gem "ruby-lsp-rspec", require: false
