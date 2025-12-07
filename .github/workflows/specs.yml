@@ -1,38 +1,31 @@
 name: Specs
+
 on:
-  # Run this workflow manually from the Actions tab.
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
-  # Run when pushing to `main`.
-  push:
-    branches:
-      - main
-
-  # Run when making a PR against `main`.
-  pull_request:
-    branches:
-      - main
-
-# Set permissions of the GITHUB_TOKEN to allow pushing.
 permissions:
-  contents: write
+  contents: read
 
 defaults:
   run:
     shell: bash
 
 jobs:
-  test:
+  specs:
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, ubuntu-24.04-arm]
-        # ruby: ["3.3", "3.4", head, jruby, truffleruby, truffleruby+graalvm]
-        ruby: ["3.4.7"]
+        ruby: ["3.4"]
     runs-on: ${{ matrix.os }}
+
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -42,5 +35,11 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
 
-      - name: Run tests
-        run: make test
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install mise
+        uses: jdx/mise-action@v3
+
+      - name: Setup and run specs
+        run: make setup specs
